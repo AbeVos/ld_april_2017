@@ -79,4 +79,16 @@ public class UIManager : MonoBehaviour
 
 		current_state = State.FadeIn;
 	}
+
+	public static void ShowPrompt(string message, Vector3 world_position)
+	{
+		Debug.Log (message);
+
+		//TODO: Show text object on UI
+	}
+
+	public static void HidePrompt()
+	{
+		//TODO: Hide text object from UI
+	}
 }
