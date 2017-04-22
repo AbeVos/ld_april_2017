@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public enum Scenes
 {
+	None=0,
 	Main=1,
 	Game=2,
 	Score=3
@@ -12,14 +13,20 @@ public enum Scenes
 
 public class Game : MonoBehaviour
 {
-	private static Scenes current_scene = 0;
+	[SerializeField]
+	private bool load_scene = true;
+
+	private static Scenes current_scene = Scenes.None;
 	private static Manager current_manager;
 
 	protected void Awake()
 	{
 		SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
-		ChangeScene (Scenes.Main);
+		if (load_scene)
+		{
+			ChangeScene (Scenes.Main);
+		}
 	}
 
 	public static void RegisterManager(Manager manager)

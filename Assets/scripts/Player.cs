@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
 	private float run_speed = 4f;
 	//TODO: Create sprint button
 
+	private float jump_force = 20f;
+	private float gravity = 5.0f;
+
 	private CharacterController controller;
 	private CameraManager camera;
 	private Transform avatar;
@@ -78,12 +81,12 @@ public class Player : MonoBehaviour
 			}
 
 			TurnAvatar(run_speed);
-			controller.Move (Time.deltaTime * (direction.magnitude * avatar.forward * speed + 9.8f * Vector3.down));
+			controller.Move (Time.deltaTime * (direction.magnitude * avatar.forward * speed + gravity * Vector3.down));
 
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				momentum = speed * direction;
-				upward_vel = 20f * Vector3.up;
+				upward_vel = jump_force * Vector3.up;
 				direction += upward_vel;
 				current_state = State.Jump;
 			}
@@ -113,14 +116,22 @@ public class Player : MonoBehaviour
 		}
 		else if (current_state == State.Jump)
 		{
-			upward_vel *= 0.9f;
+			if (Input.GetKey(KeyCode.Space))
+			{
+				upward_vel *= 0.8f;
+			}
+			else
+			{
+				upward_vel *= 0.5f;
+			}
+
 			direction = upward_vel + 2f * momentum;
 
-			controller.Move(Time.deltaTime * (direction + 9.8f * Vector3.down));
+			controller.Move(Time.deltaTime * (direction + gravity * Vector3.down));
 
 			Ray ray = new Ray(transform.position, Vector3.down);
 			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit, 0.5f, 1 << LayerMask.NameToLayer("Floor")))
+			if (Physics.Raycast(ray, out hit, 0.2f, 1 << LayerMask.NameToLayer("Floor")))
 			{
 				current_state = State.Free;
 			}
@@ -155,7 +166,7 @@ public class Player : MonoBehaviour
 
 	private void TurnAvatar(float speed)
 	{
-		if (controller.velocity.sqrMagnitude > 0)
+		if (direction.sqrMagnitude > 0)
 		{
 			avatar.rotation = Quaternion.Lerp(
 				avatar.rotation,

@@ -7,7 +7,7 @@ public class Manager : MonoBehaviour
 	[SerializeField]
 	private Scenes next_scene;
 
-	protected void Awake()
+	protected virtual void Awake()
 	{
 		Game.RegisterManager (this);
 

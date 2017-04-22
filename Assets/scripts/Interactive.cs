@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactive : MonoBehaviour
+public abstract class Interactive : MonoBehaviour
 {
 	protected enum State
 	{
@@ -32,7 +32,7 @@ public class Interactive : MonoBehaviour
 
 	public bool Skippable { get { return skippable; } }
 
-	protected void Update()
+	protected virtual void Update()
 	{
 		if (current_state == State.Interact)
 		{
@@ -91,17 +91,7 @@ public class Interactive : MonoBehaviour
 		}
 	}
 
-	protected void Interaction(float time)
-	{
-		if (t <= 1f)
-			transform.position -= Vector3.up * 0.01f;
-
-		if (t >= 2f)
-		{
-			StopInteraction();
-			interactor.StopInteraction();
-		}
-	}
+	protected abstract void Interaction(float time);
 
 	private void SetState(State state)
 	{
