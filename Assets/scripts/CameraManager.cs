@@ -11,13 +11,14 @@ public class CameraManager : MonoBehaviour
 	}
 
 	[SerializeField]
-	float follow_distance = 16f;
+	private float follow_distance = 16f;
 	[SerializeField]
-	float interaction_distance = 8f;
+	private float interaction_distance = 8f;
 
 	private Camera camera;
 
-	private Quaternion rest_direction;
+	private Quaternion rest_rotation;
+	private Quaternion interaction_rotation;
 	private Vector3 forward;
 	private Vector3 target;
 
@@ -33,7 +34,8 @@ public class CameraManager : MonoBehaviour
 	{
 		camera = Camera.main;
 
-		rest_direction = camera.transform.rotation;
+		rest_rotation = camera.transform.rotation;
+		interaction_rotation = Quaternion.Euler(camera.transform.eulerAngles - 30f * Vector3.right);
 		forward = Vector3.Cross (camera.transform.right, Vector3.up);
 	}
 
@@ -42,18 +44,25 @@ public class CameraManager : MonoBehaviour
 		switch (current_state)
 		{
 		case State.Following:
+			camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation,
+				rest_rotation,
+				5f * Time.deltaTime);
+
 			camera.transform.position = Vector3.Lerp (camera.transform.position,
-				transform.position - follow_distance * (rest_direction * Vector3.forward),
+				transform.position - follow_distance * (rest_rotation * Vector3.forward),
 				5f * Time.deltaTime);
 			break;
 		
 		case State.Interaction:
+			camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation,
+				interaction_rotation,
+				3f * Time.deltaTime);
+			
 			camera.transform.position = Vector3.Lerp (camera.transform.position,
-				transform.position - interaction_distance * (rest_direction * Vector3.forward),
-				5f * Time.deltaTime);
+				transform.position - interaction_distance * (interaction_rotation * Vector3.forward),
+				3f * Time.deltaTime);
 			break;
 		}
-
 	}
 
 	public void StartInteraction()
