@@ -51,7 +51,18 @@ public class HumanManager : MonoBehaviour
 
 	private Human SpawnHuman()
 	{
-		GameObject obj = Instantiate(human_prefab, GetPointOfInterest(), Quaternion.identity) as GameObject;
-		return obj.GetComponent<Human>();
+		GameObject obj = Instantiate(human_prefab, GetPointOfInterest(), Quaternion.identity, GameManager.Mgr.transform) as GameObject;
+		Human human = obj.GetComponent<Human>();
+
+		if (Random.Range(0,2) == 0)
+		{
+			human.Type = Score.CatPerson;
+		}
+		else
+		{
+			human.Type = Score.DogPerson;
+		}
+
+		return human;
 	}
 }

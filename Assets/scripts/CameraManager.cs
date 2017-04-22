@@ -15,12 +15,11 @@ public class CameraManager : MonoBehaviour
 	[SerializeField]
 	private float interaction_distance = 8f;
 
-	private Camera camera;
+	new private Camera camera;
 
 	private Quaternion rest_rotation;
 	private Quaternion interaction_rotation;
 	private Vector3 forward;
-	private Vector3 target;
 
 	private State current_state = State.Following;
 
@@ -28,7 +27,6 @@ public class CameraManager : MonoBehaviour
 
 	public Vector3 Forward { get { return forward; } }
 	public Vector3 Right { get { return camera.transform.right; } }
-	public Vector3 Target { set { target = value; } }
 
 	protected void Awake()
 	{

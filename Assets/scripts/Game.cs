@@ -11,13 +11,24 @@ public enum Scenes
 	Score=3
 };
 
+public enum Score
+{
+	CatPerson,
+	DogPerson,
+	Box,
+	Yarn,
+	Fish
+}
+
 public class Game : MonoBehaviour
 {
 	[SerializeField]
 	private bool load_scene = true;
 
 	private static Scenes current_scene = Scenes.None;
-	private static Manager current_manager;
+
+	private static int[] score_values;
+	private static int[] scores;
 
 	protected void Awake()
 	{
@@ -27,11 +38,10 @@ public class Game : MonoBehaviour
 		{
 			ChangeScene (Scenes.Main);
 		}
-	}
 
-	public static void RegisterManager(Manager manager)
-	{
-		current_manager = manager;
+		score_values = new int[] {100, 20, 30, 40, 60};
+		scores = new int[5];
+		Debug.Log(scores);
 	}
 
 	public static void ChangeScene(Scenes new_scene)
@@ -47,6 +57,12 @@ public class Game : MonoBehaviour
 		current_scene = new_scene;
 
 		SceneManager.LoadSceneAsync((int)current_scene, LoadSceneMode.Additive);
+	}
+
+	public static void AddScore(Score type)
+	{
+		Debug.Log("Found a " + type.ToString() + "!");
+		scores[(int)type]++;
 	}
 
 	private void SceneManager_sceneLoaded (Scene scene, LoadSceneMode loadSceneMode)

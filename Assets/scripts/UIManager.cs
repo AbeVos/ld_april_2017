@@ -16,21 +16,17 @@ public class UIManager : MonoBehaviour
 	private static Color awhite = new Color(1,1,1,0);
 	private static Color ablack = new Color (0, 0, 0, 0);
 
-	private RectTransform rect_transform;
 	private static Image fader;
 	private static Text prompt;
 	private static FadeState current_state = FadeState.Black;
 
 	private static float current_time = 0f;
-	private static float time_taken;
 
-	private static bool showing_prompt = false;
 	private static Transform position;
 	private static Color target_color;
 
 	protected void Awake()
 	{
-		rect_transform = GetComponent<RectTransform>();
 		fader = transform.GetChild(0).GetComponent<Image>();
 		prompt = transform.GetChild(1).GetComponent<Text>();
 	}
@@ -70,7 +66,7 @@ public class UIManager : MonoBehaviour
 
 		if (position != null)
 		{
-			prompt.color = Color.Lerp(prompt.color, target_color, 5f * Time.deltaTime);
+			prompt.color = Color.Lerp(prompt.color, target_color, 10f * Time.deltaTime);
 			prompt.rectTransform.position = Camera.main.WorldToScreenPoint(position.position);
 		}
 	}
@@ -80,7 +76,6 @@ public class UIManager : MonoBehaviour
 		Debug.Log ("Fade out");
 
 		current_time = 0f;
-		time_taken = time;
 
 		current_state = FadeState.FadeOut;
 	}
@@ -90,14 +85,12 @@ public class UIManager : MonoBehaviour
 		Debug.Log ("Fade in");
 
 		current_time = 0f;
-		time_taken = time;
 
 		current_state = FadeState.FadeIn;
 	}
 
 	public static void ShowPrompt(string message, Transform world_position)
 	{
-		showing_prompt = true;
 		prompt.text = message;
 		target_color = Color.white;
 		position = world_position;
@@ -105,7 +98,6 @@ public class UIManager : MonoBehaviour
 
 	public static void HidePrompt()
 	{
-		showing_prompt = true;
 		target_color = awhite;
 	}
 }

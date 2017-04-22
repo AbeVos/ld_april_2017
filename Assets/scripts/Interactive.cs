@@ -21,6 +21,8 @@ public abstract class Interactive : MonoBehaviour
 	};
 
 	[SerializeField]
+	protected Score type = Score.CatPerson;
+	[SerializeField]
 	protected bool skippable = false;
 	[SerializeField]
 	protected bool repeatable = false;
@@ -30,6 +32,7 @@ public abstract class Interactive : MonoBehaviour
 
 	protected Player interactor;
 
+	public Score Type { set { type = value; } }
 	public bool Skippable { get { return skippable; } }
 
 	protected virtual void Update()
@@ -61,7 +64,7 @@ public abstract class Interactive : MonoBehaviour
 
 		if (player != null)
 		{
-			interactor = null;
+			//interactor = null;
 			player.SetTargetInteractive (null);
 		}
 	}
@@ -79,7 +82,7 @@ public abstract class Interactive : MonoBehaviour
 		}
 	}
 
-	public void StopInteraction()
+	public virtual void StopInteraction()
 	{
 		if (repeatable)
 		{
@@ -87,13 +90,14 @@ public abstract class Interactive : MonoBehaviour
 		}
 		else
 		{
+			Game.AddScore(type);
 			SetState(State.Finished);
 		}
 	}
 
 	protected abstract void Interaction(float time);
 
-	private void SetState(State state)
+	protected virtual void SetState(State state)
 	{
 		current_state = state;
 		t = 0f;
