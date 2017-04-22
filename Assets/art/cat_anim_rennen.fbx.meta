@@ -1,0 +1,287 @@
+fileFormatVersion: 2
+guid: 0616d61708d0b14419fcdeef67e49f76
+timeCreated: 1492897107
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: arm1
+    100002: arm1 1
+    100004: arm19
+    100006: arm20
+    100008: arm20 1
+    100010: arm21
+    100012: arm21 1
+    100014: arm22
+    100016: arm22 1
+    100018: arm28
+    100020: back2
+    100022: back3
+    100024: back4
+    100026: back5
+    100028: //RootNode
+    100030: head10
+    100032: head26
+    100034: head27
+    100036: head27 1
+    100038: head41
+    100040: head7
+    100042: head8
+    100044: head9
+    100046: leg23
+    100048: leg24
+    100050: leg24 1
+    100052: leg25
+    100054: leg25 1
+    100056: leg28
+    100058: leg28 1
+    100060: leg33
+    100062: neck1
+    100064: neck2
+    100066: pPlane5
+    100068: root1
+    100070: shoulders
+    100072: tail11
+    100074: tail12
+    100076: tail13
+    100078: tail14
+    100080: tail15
+    100082: tail16
+    100084: tail17
+    100086: tail18
+    400000: arm1
+    400002: arm1 1
+    400004: arm19
+    400006: arm20
+    400008: arm20 1
+    400010: arm21
+    400012: arm21 1
+    400014: arm22
+    400016: arm22 1
+    400018: arm28
+    400020: back2
+    400022: back3
+    400024: back4
+    400026: back5
+    400028: //RootNode
+    400030: head10
+    400032: head26
+    400034: head27
+    400036: head27 1
+    400038: head41
+    400040: head7
+    400042: head8
+    400044: head9
+    400046: leg23
+    400048: leg24
+    400050: leg24 1
+    400052: leg25
+    400054: leg25 1
+    400056: leg28
+    400058: leg28 1
+    400060: leg33
+    400062: neck1
+    400064: neck2
+    400066: pPlane5
+    400068: root1
+    400070: shoulders
+    400072: tail11
+    400074: tail12
+    400076: tail13
+    400078: tail14
+    400080: tail15
+    400082: tail16
+    400084: tail17
+    400086: tail18
+    4300000: pPlane5
+    7400000: kat_rennen
+    9500000: //RootNode
+    13700000: pPlane5
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: kat_rennen
+      takeName: Take 001
+      firstFrame: 75
+      lastFrame: 94
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: pPlane5
+        weight: 1
+      - path: root1
+        weight: 1
+      - path: root1/back2
+        weight: 1
+      - path: root1/back2/back3
+        weight: 1
+      - path: root1/back2/back3/back4
+        weight: 1
+      - path: root1/back2/back3/back4/back5
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm19
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm19/arm1
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm19/arm1/arm20
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm19/arm1/arm20/arm21
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm19/arm1/arm20/arm21/arm22
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm28
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm28/arm1 1
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm28/arm1 1/arm20 1
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm28/arm1 1/arm20 1/arm21 1
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/arm28/arm1 1/arm20 1/arm21 1/arm22
+          1
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1/head9
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1/head9/head10
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1/head9/head26
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1/head9/head26/head27
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1/head9/head41
+        weight: 1
+      - path: root1/back2/back3/back4/back5/shoulders/head7/neck2/head8/neck1/head9/head41/head27
+          1
+        weight: 1
+      - path: root1/leg23
+        weight: 1
+      - path: root1/leg23/leg28
+        weight: 1
+      - path: root1/leg23/leg28/leg24
+        weight: 1
+      - path: root1/leg23/leg28/leg24/leg25
+        weight: 1
+      - path: root1/leg33
+        weight: 1
+      - path: root1/leg33/leg28 1
+        weight: 1
+      - path: root1/leg33/leg28 1/leg24 1
+        weight: 1
+      - path: root1/leg33/leg28 1/leg24 1/leg25 1
+        weight: 1
+      - path: root1/tail11
+        weight: 1
+      - path: root1/tail11/tail18
+        weight: 1
+      - path: root1/tail11/tail18/tail17
+        weight: 1
+      - path: root1/tail11/tail18/tail17/tail16
+        weight: 1
+      - path: root1/tail11/tail18/tail17/tail16/tail15
+        weight: 1
+      - path: root1/tail11/tail18/tail17/tail16/tail15/tail14
+        weight: 1
+      - path: root1/tail11/tail18/tail17/tail16/tail15/tail14/tail13
+        weight: 1
+      - path: root1/tail11/tail18/tail17/tail16/tail15/tail14/tail13/tail12
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
