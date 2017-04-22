@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
 	private enum State
 	{
 		Free,
-		Interaction
+		Interaction,
+		Jump
 	}
 
 	[SerializeField]
@@ -24,6 +25,8 @@ public class Player : MonoBehaviour
 	private bool is_running = false;
 
 	private Vector3 direction;
+	private Vector3 momentum;
+	private Vector3 upward_vel;
 
 	private Interactive target_interactive;
 
@@ -38,10 +41,10 @@ public class Player : MonoBehaviour
 
 	protected void Update()
 	{
+		direction = Vector3.zero;
+
 		if (current_state == State.Free)
 		{
-			direction = Vector3.zero;
-
 			if (Input.GetKey (KeyCode.W))
 			{
 				direction += camera.Forward;
@@ -60,26 +63,29 @@ public class Player : MonoBehaviour
 				direction -= camera.Right;
 			}
 
+			direction = direction.normalized;
+
+			float speed;
 			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			{
 				is_running = true;
+				speed = run_speed;
 			}
 			else
 			{
 				is_running = false;
+				speed = walk_speed;
 			}
 
-			direction = direction.normalized;
+			TurnAvatar(run_speed);
+			controller.Move (Time.deltaTime * (direction.magnitude * avatar.forward * speed + 9.8f * Vector3.down));
 
-			if (!is_running)
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				TurnAvatar(walk_speed);
-				controller.SimpleMove (direction.magnitude * avatar.forward * walk_speed);
-			}
-			else
-			{
-				TurnAvatar(run_speed);
-				controller.SimpleMove (direction.magnitude * avatar.forward * run_speed);
+				momentum = speed * direction;
+				upward_vel = 20f * Vector3.up;
+				direction += upward_vel;
+				current_state = State.Jump;
 			}
 
 			if (target_interactive != null
@@ -103,6 +109,20 @@ public class Player : MonoBehaviour
 			{
 				target_interactive.StopInteraction();
 				StopInteraction();
+			}
+		}
+		else if (current_state == State.Jump)
+		{
+			upward_vel *= 0.9f;
+			direction = upward_vel + 2f * momentum;
+
+			controller.Move(Time.deltaTime * (direction + 9.8f * Vector3.down));
+
+			Ray ray = new Ray(transform.position, Vector3.down);
+			RaycastHit hit;
+			if (Physics.Raycast(ray, out hit, 0.5f, 1 << LayerMask.NameToLayer("Floor")))
+			{
+				current_state = State.Free;
 			}
 		}
 	}
@@ -135,7 +155,7 @@ public class Player : MonoBehaviour
 
 	private void TurnAvatar(float speed)
 	{
-		if (direction.sqrMagnitude > 0)
+		if (controller.velocity.sqrMagnitude > 0)
 		{
 			avatar.rotation = Quaternion.Lerp(
 				avatar.rotation,

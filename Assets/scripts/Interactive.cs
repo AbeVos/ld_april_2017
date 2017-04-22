@@ -22,6 +22,8 @@ public class Interactive : MonoBehaviour
 
 	[SerializeField]
 	protected bool skippable = false;
+	[SerializeField]
+	protected bool repeatable = false;
 
 	protected State current_state = State.Idle;
 	protected float t = 0f;
@@ -34,13 +36,7 @@ public class Interactive : MonoBehaviour
 	{
 		if (current_state == State.Interact)
 		{
-			transform.position -= Vector3.up * 0.01f;
-
-			if (t >= 1f)
-			{
-				StopInteraction();
-				interactor.StopInteraction();
-			}
+			Interaction(t);
 		}
 
 		t += Time.deltaTime;
@@ -85,7 +81,26 @@ public class Interactive : MonoBehaviour
 
 	public void StopInteraction()
 	{
-		SetState(State.Finished);
+		if (repeatable)
+		{
+			SetState(State.Idle);
+		}
+		else
+		{
+			SetState(State.Finished);
+		}
+	}
+
+	protected void Interaction(float time)
+	{
+		if (t <= 1f)
+			transform.position -= Vector3.up * 0.01f;
+
+		if (t >= 2f)
+		{
+			StopInteraction();
+			interactor.StopInteraction();
+		}
 	}
 
 	private void SetState(State state)

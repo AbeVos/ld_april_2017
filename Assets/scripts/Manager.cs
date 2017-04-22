@@ -16,7 +16,7 @@ public class Manager : MonoBehaviour
 
 	protected void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.Space))
+		if (Input.GetKeyDown (KeyCode.Escape))
 		{
 			ChangeScene (next_scene, 1f);
 		}
