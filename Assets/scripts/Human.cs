@@ -29,7 +29,7 @@ public class Human : Interactive
 			{
 				if (Vector3.Distance(GameManager.Player.transform.position, transform.position) >= player_distance)
 				{
-					agent.SetDestination(HumanManager.GetPointOfInterest());
+					agent.SetDestination(GameManager.HumanManager.GetPointOfInterest());
 					looking_around = false;
 				}
 				else
@@ -48,6 +48,15 @@ public class Human : Interactive
 		}
 		else if (current_state == State.Finished)
 		{
+			agent.enabled = false;
+			transform.position += t * Vector3.up;
+			transform.eulerAngles += t * 50f * Vector3.up;
+
+			if (t >= 3f)
+			{
+				GameManager.HumanManager.RemoveHuman(this);
+				Destroy(gameObject);
+			}
 		}
 	}
 

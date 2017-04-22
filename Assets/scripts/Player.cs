@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
 		}
 		else
 		{
-			UIManager.ShowPrompt("Press <key> to interact", target_interactive.transform.position);
+			UIManager.ShowPrompt("Press <key> to interact", target_interactive.transform);
 		}
 	}
 
