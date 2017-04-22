@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
 	private CharacterController controller;
 	private CameraManager camera;
+	private Transform avatar;
 
 	private State current_state = State.Free;
 	private bool is_running = false;
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
 	{
 		controller = GetComponent<CharacterController> ();
 		camera = GetComponent<CameraManager> ();
+		avatar = transform.GetChild(0);
 
 		direction = new Vector3 ();
 	}
@@ -58,16 +60,27 @@ public class Player : MonoBehaviour
 				direction -= camera.Right;
 			}
 
-			if (!is_running)
+			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			{
-				direction = direction.normalized * walk_speed;
+				is_running = true;
 			}
 			else
 			{
-				direction = direction.normalized * run_speed;
+				is_running = false;
 			}
 
-			controller.SimpleMove (direction);
+			direction = direction.normalized;
+
+			if (!is_running)
+			{
+				TurnAvatar(walk_speed);
+				controller.SimpleMove (direction.magnitude * avatar.forward * walk_speed);
+			}
+			else
+			{
+				TurnAvatar(run_speed);
+				controller.SimpleMove (direction.magnitude * avatar.forward * run_speed);
+			}
 
 			if (target_interactive != null
 			    && Input.GetKey (KeyCode.E))
@@ -118,5 +131,16 @@ public class Player : MonoBehaviour
 	{
 		current_state = State.Free;
 		camera.StopInteraction();
+	}
+
+	private void TurnAvatar(float speed)
+	{
+		if (direction.sqrMagnitude > 0)
+		{
+			avatar.rotation = Quaternion.Lerp(
+				avatar.rotation,
+				Quaternion.LookRotation(direction),
+				2f * speed * Time.deltaTime);
+		}
 	}
 }
