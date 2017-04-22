@@ -7,7 +7,7 @@ public class Manager : MonoBehaviour
 	[SerializeField]
 	private Scenes next_scene;
 
-	protected void Awake()
+	protected virtual void Awake()
 	{
 		Game.RegisterManager (this);
 
@@ -16,7 +16,7 @@ public class Manager : MonoBehaviour
 
 	protected void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.Space))
+		if (Input.GetKeyDown (KeyCode.Escape))
 		{
 			ChangeScene (next_scene, 1f);
 		}

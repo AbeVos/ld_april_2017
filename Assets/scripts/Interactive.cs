@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactive : MonoBehaviour
+public abstract class Interactive : MonoBehaviour
 {
 	protected enum State
 	{
@@ -22,6 +22,8 @@ public class Interactive : MonoBehaviour
 
 	[SerializeField]
 	protected bool skippable = false;
+	[SerializeField]
+	protected bool repeatable = false;
 
 	protected State current_state = State.Idle;
 	protected float t = 0f;
@@ -30,17 +32,11 @@ public class Interactive : MonoBehaviour
 
 	public bool Skippable { get { return skippable; } }
 
-	protected void Update()
+	protected virtual void Update()
 	{
 		if (current_state == State.Interact)
 		{
-			transform.position -= Vector3.up * 0.01f;
-
-			if (t >= 1f)
-			{
-				StopInteraction();
-				interactor.StopInteraction();
-			}
+			Interaction(t);
 		}
 
 		t += Time.deltaTime;
@@ -85,8 +81,17 @@ public class Interactive : MonoBehaviour
 
 	public void StopInteraction()
 	{
-		SetState(State.Finished);
+		if (repeatable)
+		{
+			SetState(State.Idle);
+		}
+		else
+		{
+			SetState(State.Finished);
+		}
 	}
+
+	protected abstract void Interaction(float time);
 
 	private void SetState(State state)
 	{

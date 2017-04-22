@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-	private enum State
+	private enum FadeState
 	{
 		FadeIn,
 		White,
@@ -13,17 +13,26 @@ public class UIManager : MonoBehaviour
 		Black
 	};
 
+	private static Color awhite = new Color(1,1,1,0);
 	private static Color ablack = new Color (0, 0, 0, 0);
 
+	private RectTransform rect_transform;
 	private static Image fader;
-	private static State current_state = State.Black;
+	private static Text prompt;
+	private static FadeState current_state = FadeState.Black;
 
 	private static float current_time = 0f;
 	private static float time_taken;
 
+	private static bool showing_prompt = false;
+	private static Transform position;
+	private static Color target_color;
+
 	protected void Awake()
 	{
-		fader = transform.GetChild (0).GetComponent<Image> ();
+		rect_transform = GetComponent<RectTransform>();
+		fader = transform.GetChild(0).GetComponent<Image>();
+		prompt = transform.GetChild(1).GetComponent<Text>();
 	}
 
 	protected void Update()
@@ -32,31 +41,37 @@ public class UIManager : MonoBehaviour
 
 		switch (current_state)
 		{
-		case State.FadeIn:
+		case FadeState.FadeIn:
 			fader.color = Color.Lerp (Color.black, ablack, current_time);
 
 			if (current_time >= 1f)
 			{
-				current_state = State.White;
+				current_state = FadeState.White;
 			}
 			break;
 
-		case State.White:
+		case FadeState.White:
 			fader.color = ablack;
 			break;
 
-		case State.FadeOut:
+		case FadeState.FadeOut:
 			fader.color = Color.Lerp (ablack, Color.black, current_time);
 
 			if (current_time >= 1f)
 			{
-				current_state = State.Black;
+				current_state = FadeState.Black;
 			}
 			break;
 
-		case State.Black:
+		case FadeState.Black:
 			fader.color = Color.black;
 			break;
+		}
+
+		if (position != null)
+		{
+			prompt.color = Color.Lerp(prompt.color, target_color, 5f * Time.deltaTime);
+			prompt.rectTransform.position = Camera.main.WorldToScreenPoint(position.position);
 		}
 	}
 
@@ -67,7 +82,7 @@ public class UIManager : MonoBehaviour
 		current_time = 0f;
 		time_taken = time;
 
-		current_state = State.FadeOut;
+		current_state = FadeState.FadeOut;
 	}
 
 	public static void FadeIn(float time=1f)
@@ -77,18 +92,20 @@ public class UIManager : MonoBehaviour
 		current_time = 0f;
 		time_taken = time;
 
-		current_state = State.FadeIn;
+		current_state = FadeState.FadeIn;
 	}
 
-	public static void ShowPrompt(string message, Vector3 world_position)
+	public static void ShowPrompt(string message, Transform world_position)
 	{
-		Debug.Log (message);
-
-		//TODO: Show text object on UI
+		showing_prompt = true;
+		prompt.text = message;
+		target_color = Color.white;
+		position = world_position;
 	}
 
 	public static void HidePrompt()
 	{
-		//TODO: Hide text object from UI
+		showing_prompt = true;
+		target_color = awhite;
 	}
 }
