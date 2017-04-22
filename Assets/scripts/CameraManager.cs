@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+	private enum State
+	{
+		Following,
+		Interaction
+	}
+
 	[SerializeField]
-	float camera_distance = 5f;
+	float follow_distance = 16f;
+	[SerializeField]
+	float interaction_distance = 8f;
 
 	private Camera camera;
 
 	private Quaternion rest_direction;
 	private Vector3 forward;
+	private Vector3 target;
+
+	private State current_state = State.Following;
 
 	public Camera Camera { get { return camera; } }
 
 	public Vector3 Forward { get { return forward; } }
 	public Vector3 Right { get { return camera.transform.right; } }
+	public Vector3 Target { set { target = value; } }
 
 	protected void Awake()
 	{
@@ -27,10 +39,30 @@ public class CameraManager : MonoBehaviour
 
 	protected void Update()
 	{
-		Debug.DrawRay (camera.transform.position, camera_distance * (rest_direction * Vector3.forward));
+		switch (current_state)
+		{
+		case State.Following:
+			camera.transform.position = Vector3.Lerp (camera.transform.position,
+				transform.position - follow_distance * (rest_direction * Vector3.forward),
+				5f * Time.deltaTime);
+			break;
+		
+		case State.Interaction:
+			camera.transform.position = Vector3.Lerp (camera.transform.position,
+				transform.position - interaction_distance * (rest_direction * Vector3.forward),
+				5f * Time.deltaTime);
+			break;
+		}
 
-		camera.transform.position = Vector3.Lerp (camera.transform.position,
-			transform.position - camera_distance * (rest_direction * Vector3.forward),
-			5f * Time.deltaTime);
+	}
+
+	public void StartInteraction()
+	{
+		current_state = State.Interaction;
+	}
+
+	public void StopInteraction()
+	{
+		current_state = State.Following;
 	}
 }
