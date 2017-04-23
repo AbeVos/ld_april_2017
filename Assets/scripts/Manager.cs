@@ -12,7 +12,7 @@ public class Manager : MonoBehaviour
 		UIManager.FadeIn ();
 	}
 
-	protected void Update()
+	protected virtual void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.Escape))
 		{
