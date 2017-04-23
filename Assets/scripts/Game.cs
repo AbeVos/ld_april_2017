@@ -30,6 +30,7 @@ public class Game : MonoBehaviour
 	private static int[] score_values;
 	private static int[] scores;
 
+	private static TextDispenser textDispenser;
 	private static Scoreboard scoreboard;
 
 	protected void Awake()
@@ -44,6 +45,7 @@ public class Game : MonoBehaviour
 		score_values = new int[] {100, 20, 30, 40, 60};
 		scores = new int[5];
 
+		textDispenser = FindObjectOfType<TextDispenser>();
 		scoreboard = FindObjectOfType<Scoreboard>();
 	}
 
@@ -66,6 +68,8 @@ public class Game : MonoBehaviour
 	{
 		Debug.Log("Found a " + type.ToString() + "!");
 		scores[(int)type]++;
+
+		textDispenser.DispenseText();
 	}
 
 	private void SceneManager_sceneLoaded (Scene scene, LoadSceneMode loadSceneMode)
