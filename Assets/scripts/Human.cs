@@ -17,29 +17,35 @@ public class Human : Interactive
 
 	private NavMeshAgent agent;
 	private Transform avatar;
+    private Animator animationController;
 
 	private bool looking_around = true;
 
     [SerializeField, FMODUnity.EventRef]
-    private string masReactionEventRef, femReactionEventRef;
-    private FMOD.Studio.EventInstance reactionbEventInstance;
+    private string masReactionEventRef, femReactionEventRef, walkEventRef;
+    private FMOD.Studio.EventInstance reactionEventInstance;
+    private FMOD.Studio.EventInstance walkEventInstance;
 
     protected void Awake()
 	{
 		agent = GetComponent<NavMeshAgent>();
 		avatar = transform.GetChild(0);
+	    animationController = avatar.GetComponentInChildren<Animator>();
 
-	    if (voiceType == HumanVoiceType.masculine)
+
+        if (voiceType == HumanVoiceType.masculine)
 	    {
-	        reactionbEventInstance = FMODUnity.RuntimeManager.CreateInstance(masReactionEventRef);
+	        reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(masReactionEventRef);
         }
 	    else
 	    {
-	        reactionbEventInstance = FMODUnity.RuntimeManager.CreateInstance(femReactionEventRef);
+	        reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(femReactionEventRef);
         }
+
+	    walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(walkEventRef);
     }
 
-	protected override void Update()
+    protected override void Update()
 	{
 		base.Update();
 
@@ -65,6 +71,8 @@ public class Human : Interactive
 				agent.SetDestination(transform.position);
 				looking_around = true;
 			}
+
+            animationController.SetFloat("speed",agent.velocity.magnitude);
 		}
 		else if (current_state == State.Finished)
 		{
@@ -82,11 +90,12 @@ public class Human : Interactive
 
 	protected override void Interaction(float time)
 	{
-        avatar.transform.localPosition = (Mathf.Abs(0.5f * Mathf.Sin(2f * Mathf.PI * time)) + 0.3f) * Vector3.up;
+        //avatar.transform.localPosition = (Mathf.Abs(0.5f * Mathf.Sin(2f * Mathf.PI * time)) + 0.3f) * Vector3.up;
 
 		if (time > 2f)
 		{
 			avatar.transform.localPosition = 0.8f * Vector3.up;
+            animationController.SetBool("interacting", false);
 			StopInteraction();
 			interactor.StopInteraction();
 		}
@@ -98,8 +107,14 @@ public class Human : Interactive
 
 		if (state == State.Interact)
 		{
-		    reactionbEventInstance.start();
+		    animationController.SetBool("interacting", true);
+            reactionEventInstance.start();
 			agent.SetDestination(transform.position);
 		}
 	}
+
+    public void PlayFootstep()
+    {
+        walkEventInstance.start();
+    }
 }

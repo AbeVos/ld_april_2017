@@ -62,6 +62,8 @@ public class HumanSpawner : MonoBehaviour
 	        human.voiceType = HumanVoiceType.feminine;
 	    }
 
+        Debug.Log(human.voiceType.ToString());
+
         open_door = true;
 		t = 0f;
 
