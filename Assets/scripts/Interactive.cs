@@ -32,7 +32,11 @@ public abstract class Interactive : MonoBehaviour
 
 	protected Player interactor;
 
-	public Score Type { set { type = value; } }
+	public Score Type
+	{ 
+		get { return = type; }
+		set { type = value; }
+	}
 	public bool Skippable { get { return skippable; } }
 
 	protected virtual void Update()
