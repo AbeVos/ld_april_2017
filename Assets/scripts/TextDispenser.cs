@@ -13,7 +13,11 @@ public class TextDispenser : MonoBehaviour
 	private bool dispensing_text = false;
 	private float t = 0f;
 
-	protected void Awake()
+    [SerializeField, FMODUnity.EventRef]
+    private string xpEventRef;
+    private FMOD.Studio.EventInstance xpEventInstance;
+
+    protected void Awake()
 	{
 		text_object = GetComponentInChildren<Text>();
 		text_transform = text_object.GetComponent<RectTransform>();
@@ -62,6 +66,7 @@ public class TextDispenser : MonoBehaviour
 	public void DispenseText()
 	{
 		if (dispensing_text == true) return;
+	    xpEventInstance.start();
 
 		text_object.text = messages[Random.Range(0,messages.Length)];
 
