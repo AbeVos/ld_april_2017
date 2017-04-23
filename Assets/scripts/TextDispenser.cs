@@ -22,7 +22,8 @@ public class TextDispenser : MonoBehaviour
 		text_object = GetComponentInChildren<Text>();
 		text_transform = text_object.GetComponent<RectTransform>();
 
-        xpEventInstance = FMODUnity.RuntimeManager.CreateInstance(xpEventRef);
+	    if (Application.platform != RuntimePlatform.LinuxEditor)
+            xpEventInstance = FMODUnity.RuntimeManager.CreateInstance(xpEventRef);
         //text_object.enabled = false;
 
         messages = new string[] {
@@ -67,7 +68,8 @@ public class TextDispenser : MonoBehaviour
 	public void DispenseText()
 	{
 		if (dispensing_text == true) return;
-	    xpEventInstance.start();
+	    if (Application.platform != RuntimePlatform.LinuxEditor)
+            xpEventInstance.start();
 
 		text_object.text = messages[Random.Range(0,messages.Length)];
 

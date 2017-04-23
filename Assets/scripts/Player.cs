@@ -53,7 +53,8 @@ public class Player : MonoBehaviour
         animationController = avatar.GetComponentInChildren<Animator>();
 
         direction = new Vector3();
-        SetupFmodEvents();
+        if (Application.platform != RuntimePlatform.LinuxEditor)
+            SetupFmodEvents();
     }
 
     private void SetupFmodEvents()
@@ -214,6 +215,8 @@ public class Player : MonoBehaviour
 
     public void PlayFootstepSound()
     {
+        if (Application.platform == RuntimePlatform.LinuxEditor) { return;}
+
         if (current_state == State.Free)
         {
             pawMovementParameterInstance.setValue(momentum.magnitude / (run_speed * .6f));
@@ -226,17 +229,20 @@ public class Player : MonoBehaviour
 
     public void StartPurr()
     {
-        purrParameterInstance.setValue(1);
+        if (Application.platform != RuntimePlatform.LinuxEditor)
+            purrParameterInstance.setValue(1);
     }
 
     public void StopPurr()
     {
-        purrParameterInstance.setValue(0);
+        if (Application.platform != RuntimePlatform.LinuxEditor)
+            purrParameterInstance.setValue(0);
     }
 
     public void PlayVox()
     {
-        voxEventInstance.start();
+        if (Application.platform != RuntimePlatform.LinuxEditor)
+            voxEventInstance.start();
     }
 
     private void TurnAvatar(float speed)

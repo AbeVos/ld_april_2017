@@ -32,17 +32,20 @@ public class Human : Interactive
 		avatar = transform.GetChild(0);
 	    animationController = avatar.GetComponentInChildren<Animator>();
 
-
-        if (voiceType == HumanVoiceType.masculine)
+	    if (Application.platform != RuntimePlatform.LinuxEditor)
 	    {
-	        reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(masReactionEventRef);
-        }
-	    else
-	    {
-	        reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(femReactionEventRef);
-        }
+	        if (voiceType == HumanVoiceType.masculine)
+	        {
+	            reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(masReactionEventRef);
+	        }
+	        else
+	        {
+	            reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(femReactionEventRef);
+	        }
 
-	    walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(walkEventRef);
+	        walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(walkEventRef);
+        }
+        
     }
 
     protected override void Update()
@@ -115,6 +118,7 @@ public class Human : Interactive
 
     public void PlayFootstep()
     {
-        walkEventInstance.start();
+        if (Application.platform != RuntimePlatform.LinuxEditor)
+            walkEventInstance.start();
     }
 }
