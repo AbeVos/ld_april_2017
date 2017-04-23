@@ -34,7 +34,7 @@ public abstract class Interactive : MonoBehaviour
 
 	public Score Type
 	{ 
-		get { return = type; }
+		get { return type; }
 		set { type = value; }
 	}
 	public bool Skippable { get { return skippable; } }
