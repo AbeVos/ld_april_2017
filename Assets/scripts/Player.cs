@@ -199,7 +199,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            UIManager.ShowPrompt("Press <key> to interact", target_interactive.transform);
+            UIManager.ShowPrompt("Press E to interact", target_interactive.transform);
         }
     }
 
