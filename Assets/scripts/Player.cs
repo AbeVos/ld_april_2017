@@ -21,11 +21,10 @@ public class Player : MonoBehaviour
 	private float gravity = 5.0f;
 
 	private CharacterController controller;
-	private CameraManager camera;
+	new private CameraManager camera;
 	private Transform avatar;
 
 	private State current_state = State.Free;
-	private bool is_running = false;
 
 	private Vector3 direction;
 	private Vector3 momentum;
@@ -71,12 +70,10 @@ public class Player : MonoBehaviour
 			float speed;
 			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			{
-				is_running = true;
 				speed = run_speed;
 			}
 			else
 			{
-				is_running = false;
 				speed = walk_speed;
 			}
 

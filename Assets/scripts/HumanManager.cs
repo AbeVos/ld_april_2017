@@ -11,11 +11,13 @@ public class HumanManager : MonoBehaviour
 
 	private List<Human> humans;
 
-	private Transform[] points_of_interest;
+	private PointOfInterest[] points_of_interest;
+	private HumanSpawner[] spawners;
 
 	protected void Awake()
 	{
-		points_of_interest = transform.GetComponentsInChildren<Transform>();
+		points_of_interest = transform.GetComponentsInChildren<PointOfInterest>();
+		spawners = transform.GetComponentsInChildren<HumanSpawner>();
 
 		humans = new List<Human>();
 	}
@@ -24,34 +26,30 @@ public class HumanManager : MonoBehaviour
 	{
 		if (humans.Count < max_humans)
 		{
-			humans.Add(SpawnHuman());
+			HumanSpawner spawner = spawners[Random.Range(0, spawners.Length)];
+
+			humans.Add(spawner.SpawnHuman(transform));
 		}
 	}
 
 	protected void OnDrawGizmos()
 	{
-		points_of_interest = transform.GetComponentsInChildren<Transform>();
+		points_of_interest = transform.GetComponentsInChildren<PointOfInterest>();
 
 		Gizmos.color = Color.red;
-		foreach (Transform poi in points_of_interest)
+		foreach (PointOfInterest poi in points_of_interest)
 		{
-			Gizmos.DrawSphere(poi.position, 0.1f);
+			Gizmos.DrawSphere(poi.transform.position, 0.1f);
 		}
 	}
 
 	public Vector3 GetPointOfInterest()
 	{
-		return points_of_interest[Random.Range(0, points_of_interest.Length-1)].position;
+		return points_of_interest[Random.Range(0, points_of_interest.Length-1)].transform.position;
 	}
 
 	public void RemoveHuman(Human human)
 	{
 		humans.Remove(human);
-	}
-
-	private Human SpawnHuman()
-	{
-		GameObject obj = Instantiate(human_prefab, GetPointOfInterest(), Quaternion.identity) as GameObject;
-		return obj.GetComponent<Human>();
 	}
 }

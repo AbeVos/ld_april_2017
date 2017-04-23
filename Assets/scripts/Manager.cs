@@ -5,28 +5,26 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
 	[SerializeField]
-	private Scenes next_scene;
+	protected Scenes next_scene;
 
 	protected virtual void Awake()
 	{
-		Game.RegisterManager (this);
-
 		UIManager.FadeIn ();
 	}
 
-	protected void Update()
+	protected virtual void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.Escape))
 		{
-			ChangeScene (next_scene, 1f);
+			ChangeScene ();
 		}
 	}
 
-	private void ChangeScene(Scenes next_scene, float time=1f)
+	protected void ChangeScene()
 	{
 		UIManager.FadeOut();
 
-		StartCoroutine(FadeOut(time));
+		StartCoroutine(FadeOut(1f));
 	}
 
 	private IEnumerator FadeOut(float time=1f)

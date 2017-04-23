@@ -11,13 +11,27 @@ public enum Scenes
 	Score=3
 };
 
+public enum Score
+{
+	CatPerson,
+	DogPerson,
+	Box,
+	Yarn,
+	Fish
+}
+
 public class Game : MonoBehaviour
 {
 	[SerializeField]
 	private bool load_scene = true;
 
 	private static Scenes current_scene = Scenes.None;
-	private static Manager current_manager;
+
+	private static int[] score_values;
+	private static int[] scores;
+
+	private static TextDispenser textDispenser;
+	private static Scoreboard scoreboard;
 
 	protected void Awake()
 	{
@@ -27,11 +41,12 @@ public class Game : MonoBehaviour
 		{
 			ChangeScene (Scenes.Main);
 		}
-	}
 
-	public static void RegisterManager(Manager manager)
-	{
-		current_manager = manager;
+		score_values = new int[] {100, 20, 30, 40, 60};
+		scores = new int[5];
+
+		textDispenser = FindObjectOfType<TextDispenser>();
+		scoreboard = FindObjectOfType<Scoreboard>();
 	}
 
 	public static void ChangeScene(Scenes new_scene)
@@ -49,8 +64,24 @@ public class Game : MonoBehaviour
 		SceneManager.LoadSceneAsync((int)current_scene, LoadSceneMode.Additive);
 	}
 
+	public static void AddScore(Score type)
+	{
+		Debug.Log("Found a " + type.ToString() + "!");
+		scores[(int)type]++;
+
+		textDispenser.DispenseText();
+	}
+
 	private void SceneManager_sceneLoaded (Scene scene, LoadSceneMode loadSceneMode)
 	{
-		
+		if (scene.buildIndex == 3)
+		{
+			scoreboard.gameObject.SetActive(true);
+			scoreboard.SetScore(scores, score_values);
+		}
+		else
+		{
+			scoreboard.gameObject.SetActive(false);
+		}	
 	}
 }
