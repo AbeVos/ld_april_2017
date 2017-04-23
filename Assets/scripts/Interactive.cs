@@ -84,13 +84,14 @@ public abstract class Interactive : MonoBehaviour
 
 	public virtual void StopInteraction()
 	{
+		Game.AddScore(type);
+
 		if (repeatable)
 		{
 			SetState(State.Idle);
 		}
 		else
 		{
-			Game.AddScore(type);
 			SetState(State.Finished);
 		}
 	}
