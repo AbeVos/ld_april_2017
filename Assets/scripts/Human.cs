@@ -65,7 +65,7 @@ public class Human : Interactive
 				{
 					Vector3 target = GameManager.Player.transform.position;
 					target.y = transform.position.y;
-					transform.LookAt(target);
+					transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target - transform.position), 5f * Time.deltaTime);
 				}	
 			}
 			else if (Vector3.Distance(transform.position, agent.destination) < agent.stoppingDistance
@@ -95,6 +95,10 @@ public class Human : Interactive
 	{
         //avatar.transform.localPosition = (Mathf.Abs(0.5f * Mathf.Sin(2f * Mathf.PI * time)) + 0.3f) * Vector3.up;
 
+		Vector3 target = GameManager.Player.transform.position;
+		target.y = transform.position.y;
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target - transform.position), 5f * Time.deltaTime);
+
 		if (time > 2f)
 		{
 			avatar.transform.localPosition = 0.8f * Vector3.up;
@@ -111,7 +115,8 @@ public class Human : Interactive
 		if (state == State.Interact)
 		{
 		    animationController.SetBool("interacting", true);
-            reactionEventInstance.start();
+			if (Application.platform != RuntimePlatform.LinuxEditor)
+            	reactionEventInstance.start();
 			agent.SetDestination(transform.position);
 		}
 	}
