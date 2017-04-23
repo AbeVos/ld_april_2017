@@ -53,7 +53,16 @@ public class HumanSpawner : MonoBehaviour
 			human.Type = Score.DogPerson;
 		}
 
-		open_door = true;
+	    if (Random.Range(0, 2) == 0)
+	    {
+	        human.voiceType = HumanVoiceType.masculine;
+	    }
+	    else
+	    {
+	        human.voiceType = HumanVoiceType.feminine;
+	    }
+
+        open_door = true;
 		t = 0f;
 
 		return human;

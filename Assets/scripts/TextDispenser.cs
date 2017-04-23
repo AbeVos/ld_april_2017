@@ -22,9 +22,10 @@ public class TextDispenser : MonoBehaviour
 		text_object = GetComponentInChildren<Text>();
 		text_transform = text_object.GetComponent<RectTransform>();
 
-		//text_object.enabled = false;
+        xpEventInstance = FMODUnity.RuntimeManager.CreateInstance(xpEventRef);
+        //text_object.enabled = false;
 
-		messages = new string[] {
+        messages = new string[] {
 			"PURRfect!",
 			"FURry Good!",
 			"Nice CATch!",

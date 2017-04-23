@@ -149,12 +149,12 @@ public class Player : MonoBehaviour
         }
         else if (current_state == State.Interaction)
         {
+
             // Stop interaction manually
             if (Input.GetKey(KeyCode.E)
                 && target_interactive.Skippable)
             {
-                // todo: Target interactive type opvragen   enum score
-
+                StopPurr();
                 target_interactive.StopInteraction();
                 StopInteraction();
             }

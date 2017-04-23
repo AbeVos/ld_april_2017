@@ -3,21 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum HumanVoiceType
+{
+    masculine,
+    feminine
+}
+
 public class Human : Interactive
 {
 	[SerializeField]
 	private float player_distance = 10f;
+    public HumanVoiceType voiceType;
 
 	private NavMeshAgent agent;
 	private Transform avatar;
 
 	private bool looking_around = true;
 
-	protected void Awake()
+    [SerializeField, FMODUnity.EventRef]
+    private string masReactionEventRef, femReactionEventRef;
+    private FMOD.Studio.EventInstance reactionbEventInstance;
+
+    protected void Awake()
 	{
 		agent = GetComponent<NavMeshAgent>();
 		avatar = transform.GetChild(0);
-	}
+
+	    if (voiceType == HumanVoiceType.masculine)
+	    {
+	        reactionbEventInstance = FMODUnity.RuntimeManager.CreateInstance(masReactionEventRef);
+        }
+	    else
+	    {
+	        reactionbEventInstance = FMODUnity.RuntimeManager.CreateInstance(femReactionEventRef);
+        }
+    }
 
 	protected override void Update()
 	{
@@ -62,7 +82,7 @@ public class Human : Interactive
 
 	protected override void Interaction(float time)
 	{
-		avatar.transform.localPosition = (Mathf.Abs(0.5f * Mathf.Sin(2f * Mathf.PI * time)) + 0.3f) * Vector3.up;
+        avatar.transform.localPosition = (Mathf.Abs(0.5f * Mathf.Sin(2f * Mathf.PI * time)) + 0.3f) * Vector3.up;
 
 		if (time > 2f)
 		{
@@ -78,6 +98,7 @@ public class Human : Interactive
 
 		if (state == State.Interact)
 		{
+		    reactionbEventInstance.start();
 			agent.SetDestination(transform.position);
 		}
 	}
