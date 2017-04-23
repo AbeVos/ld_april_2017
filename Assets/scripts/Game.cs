@@ -30,6 +30,8 @@ public class Game : MonoBehaviour
 	private static int[] score_values;
 	private static int[] scores;
 
+	private static Scoreboard scoreboard;
+
 	protected void Awake()
 	{
 		SceneManager.sceneLoaded += SceneManager_sceneLoaded;
@@ -41,7 +43,8 @@ public class Game : MonoBehaviour
 
 		score_values = new int[] {100, 20, 30, 40, 60};
 		scores = new int[5];
-		Debug.Log(scores);
+
+		scoreboard = FindObjectOfType<Scoreboard>();
 	}
 
 	public static void ChangeScene(Scenes new_scene)
@@ -67,6 +70,14 @@ public class Game : MonoBehaviour
 
 	private void SceneManager_sceneLoaded (Scene scene, LoadSceneMode loadSceneMode)
 	{
-		
+		if (scene.buildIndex == 3)
+		{
+			scoreboard.gameObject.SetActive(true);
+			scoreboard.SetScore(scores, score_values);
+		}
+		else
+		{
+			scoreboard.gameObject.SetActive(false);
+		}	
 	}
 }
