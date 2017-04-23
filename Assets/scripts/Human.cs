@@ -40,7 +40,7 @@ public class Human : Interactive
 				}	
 			}
 			else if (Vector3.Distance(transform.position, agent.destination) < agent.stoppingDistance
-				|| Vector3.Distance(GameManager.Player.transform.position, transform.position) < player_distance)
+				|| (type == Score.CatPerson && Vector3.Distance(GameManager.Player.transform.position, transform.position) < player_distance))
 			{
 				agent.SetDestination(transform.position);
 				looking_around = true;
@@ -69,6 +69,16 @@ public class Human : Interactive
 			avatar.transform.localPosition = 0.8f * Vector3.up;
 			StopInteraction();
 			interactor.StopInteraction();
+		}
+	}
+
+	protected override void SetState(State state)
+	{
+		base.SetState(state);
+
+		if (state == State.Interact)
+		{
+			agent.SetDestination(transform.position);
 		}
 	}
 }
