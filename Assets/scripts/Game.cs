@@ -42,7 +42,7 @@ public class Game : MonoBehaviour
 			ChangeScene (Scenes.Main);
 		}
 
-		score_values = new int[] {100, 20, 30, 40, 60};
+		score_values = new int[] {100, 20, 30, 5, 60};
 		scores = new int[5];
 
 		textDispenser = FindObjectOfType<TextDispenser>();
