@@ -22,7 +22,6 @@ public class ObjectFader : MonoBehaviour
     private void Update()
     {
         Ray ray = new Ray(transform.position, Camera.main.transform.position - transform.position);
-        RaycastHit newHit;
 
         foreach (Transform blockingObject in blockingObjects)
         {
