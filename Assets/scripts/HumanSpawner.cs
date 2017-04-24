@@ -19,11 +19,14 @@ public class HumanSpawner : MonoBehaviour
 
 	protected void Update()
 	{
+
+       
 		//door.localRotation = new Quaternion(0,6f,0,1);
 
 		if (open_door)
 		{
-			door.localRotation = Quaternion.Lerp(door.localRotation, Quaternion.Euler(120f * Vector3.up), 3f * Time.deltaTime);
+		    Debug.Log("Opening door");
+            door.localRotation = Quaternion.Lerp(door.localRotation, Quaternion.Euler(120f * Vector3.up), 3f * Time.deltaTime);
 
 			t += Time.deltaTime;
 			if (t >= 3f) open_door = false;
