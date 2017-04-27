@@ -1,4 +1,4 @@
-﻿Shader "Toon/CelShadingForwardFade"
+﻿Shader "Toon/ToonShaderFade"
 {
 	Properties
 	{

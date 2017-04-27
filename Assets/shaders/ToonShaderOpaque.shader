@@ -1,4 +1,4 @@
-﻿Shader "Toon/CelShadingForwardOpaque"
+﻿Shader "Toon/ToonShaderOpaque"
 {
 	Properties
 	{

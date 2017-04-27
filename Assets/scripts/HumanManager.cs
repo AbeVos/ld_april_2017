@@ -39,7 +39,7 @@ public class HumanManager : MonoBehaviour
 		Gizmos.color = Color.red;
 		foreach (PointOfInterest poi in points_of_interest)
 		{
-			Gizmos.DrawSphere(poi.transform.position, 0.1f);
+			Gizmos.DrawSphere(poi.transform.position, 1.8f);
 		}
 	}
 
