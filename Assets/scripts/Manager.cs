@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -9,7 +8,7 @@ public class Manager : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		UiManager.FadeIn ();
+		UIManager.FadeIn ();
 	}
 
 	protected virtual void Update()
@@ -22,7 +21,7 @@ public class Manager : MonoBehaviour
 
 	protected void ChangeScene()
 	{
-		UiManager.FadeOut();
+		UIManager.FadeOut();
 
 		StartCoroutine(FadeOut(1f));
 	}

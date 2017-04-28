@@ -13,7 +13,7 @@ public class Exit : Interactive
 	public override void StopInteraction()
 	{
 		SetState(State.Finished);
-		UiManager.HidePrompt();
+		UIManager.HidePrompt();
 		GameManager.EndGame();
 	}
 }
