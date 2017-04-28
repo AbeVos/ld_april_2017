@@ -30,20 +30,18 @@ public class Human : Interactive
         _avatar = transform.GetChild(0);
         _animationController = _avatar.GetComponentInChildren<Animator>();
 
-        if (Application.platform != RuntimePlatform.LinuxEditor)
-        {
-            if (VoiceType == HumanVoiceType.Masculine)
-            {
-                _reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(_masReactionEventRef);
-            }
-            else
-            {
-                _reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(_femReactionEventRef);
-            }
+        SetupFmod();
+    }
 
-            _walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(_walkEventRef);
-        }
+    private void SetupFmod()
+    {
+        var attributes = FMODUnity.RuntimeUtils.To3DAttributes(transform);
 
+        _reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(VoiceType == HumanVoiceType.Masculine ? _masReactionEventRef : _femReactionEventRef);
+        _walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(_walkEventRef);
+
+        _reactionEventInstance.set3DAttributes(attributes);
+        _walkEventInstance.set3DAttributes(attributes);
     }
 
     protected override void Update()
