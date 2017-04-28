@@ -65,7 +65,7 @@ public class HumanSpawner : MonoBehaviour
             human.VoiceType = HumanVoiceType.Feminine;
         }
 
-        Debug.Log(human.VoiceType.ToString());
+//        Debug.Log(human.VoiceType.ToString());
 
         MaterialPropertyBlock props = new MaterialPropertyBlock();
         Color randomColor = Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.3f, 1f);
