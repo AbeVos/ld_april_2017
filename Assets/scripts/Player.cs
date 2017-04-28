@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
     private float _runSpeed = 4f;
     //TODO: Create sprint button
 
-    private float _jumpForce = 20f;
-    private float _gravity = 5.0f;
+    private float _jumpForce = 25f;
+    private float _gravity = 4.0f;
 
     private CharacterController _controller;
     private CameraManager _camera;
@@ -37,10 +37,10 @@ public class Player : MonoBehaviour
     private EventInstance _pawEventInstance;
     private EventInstance _furEventInstance;
     private EventInstance _voxEventInstance;
-    private EventInstance _purrEventInstance;
+    // private EventInstance _purrEventInstance;
     private ParameterInstance _pawMovementParameterInstance;
-    private ParameterInstance _furMovementParameterInstance = null;
-    private ParameterInstance _purrParameterInstance = null;
+    private ParameterInstance _furMovementParameterInstance;
+    // private ParameterInstance _purrParameterInstance = null;
     // private FMOD.Studio.ParameterInstance surfaceParameterInstance = null;
 
     protected void Awake()
@@ -57,30 +57,35 @@ public class Player : MonoBehaviour
 
     private void SetupFmodEvents()
     {
+        var attributes = FMODUnity.RuntimeUtils.To3DAttributes(transform);
+
         if (_pawEventInstance == null)
         {
             _pawEventInstance = FMODUnity.RuntimeManager.CreateInstance(_pawEventRef);
             _pawEventInstance.getParameter("cat_paws_movement", out _pawMovementParameterInstance);
+            _pawEventInstance.set3DAttributes(attributes);
         }
 
         if (_furEventInstance == null)
         {
             _furEventInstance = FMODUnity.RuntimeManager.CreateInstance(_furEventRef);
             _furEventInstance.getParameter("cat_fur_movement", out _furMovementParameterInstance);
+            _furEventInstance.set3DAttributes(attributes);
         }
 
         if (_voxEventInstance == null)
         {
             _voxEventInstance = FMODUnity.RuntimeManager.CreateInstance(_voxEventRef);
+            _voxEventInstance.set3DAttributes(attributes);
         }
 
-        if (_purrEventInstance == null)
-        {
-            _purrEventInstance = FMODUnity.RuntimeManager.CreateInstance(_purrEventRef);
-        }
+        //if (_purrEventInstance == null)
+        //{
+        //    _purrEventInstance = FMODUnity.RuntimeManager.CreateInstance(_purrEventRef);
+        //}
 
-        // purr loops
-        _purrEventInstance.start();
+        //// purr loops
+        //_purrEventInstance.start();
     }
 
     protected void Update()
@@ -153,13 +158,16 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.E)
                 && _targetInteractive.Skippable)
             {
-                StopPurr();
+                //StopPurr();
                 _targetInteractive.StopInteraction();
                 StopInteraction();
             }
         }
         else if (_currentState == State.Jump)
         {
+            Debug.Log("Jump");
+
+
             if (Input.GetKey(KeyCode.Space))
             {
                 _upwardVel *= 0.8f;
@@ -176,8 +184,9 @@ public class Player : MonoBehaviour
 
             Ray ray = new Ray(transform.position, Vector3.down);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 0.2f, 1 << LayerMask.NameToLayer("Floor")))
+            if (Physics.Raycast(ray, out hit, 0.5f, 1 << LayerMask.NameToLayer("Floor")))
             {
+                Debug.Log("Hit Floor");
                 _animationController.SetBool("jump", false);
                 _currentState = State.Free;
             }
@@ -193,11 +202,11 @@ public class Player : MonoBehaviour
 
         if (_targetInteractive == null)
         {
-            UiManager.HidePrompt();
+            UIManager.HidePrompt();
         }
         else
         {
-            UiManager.ShowPrompt("Press E to interact", _targetInteractive.transform);
+            UIManager.ShowPrompt("Press E to interact", _targetInteractive.transform);
         }
     }
 
@@ -225,17 +234,17 @@ public class Player : MonoBehaviour
         _furEventInstance.start();
     }
 
-    public void StartPurr()
-    {
-        if (Application.platform != RuntimePlatform.LinuxEditor)
-            _purrParameterInstance.setValue(1);
-    }
+    //public void StartPurr()
+    //{
+    //    if (Application.platform != RuntimePlatform.LinuxEditor)
+    //        _purrParameterInstance.setValue(1);
+    //}
 
-    public void StopPurr()
-    {
-        if (Application.platform != RuntimePlatform.LinuxEditor)
-            _purrParameterInstance.setValue(0);
-    }
+    //public void StopPurr()
+    //{
+    //    if (Application.platform != RuntimePlatform.LinuxEditor)
+    //        _purrParameterInstance.setValue(0);
+    //}
 
     public void PlayVox()
     {

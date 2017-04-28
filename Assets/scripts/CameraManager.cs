@@ -11,7 +11,7 @@ public class CameraManager : MonoBehaviour
     }
 
     [SerializeField]
-    private float _followDistance = 16f;
+    private float _followDistance = 14f;
     [SerializeField]
     private float _interactionDistance = 8f;
 
@@ -46,7 +46,7 @@ public class CameraManager : MonoBehaviour
                     _restRotation, 5f * Time.deltaTime);
 
                 _camera.transform.position = Vector3.Lerp(_camera.transform.position,
-                    transform.position - _followDistance * (_restRotation * Vector3.forward*2), 5f * Time.deltaTime);
+                    transform.position - _followDistance * (_restRotation * Vector3.forward), 5f * Time.deltaTime);
                 break;
 
             case State.Interaction:
