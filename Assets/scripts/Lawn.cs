@@ -45,7 +45,9 @@ public class Lawn : MonoBehaviour
 		{
 			GameObject grassObj = Instantiate(grass, hit.point + 0.5f * Vector3.up, rotation);
 			grassObj.transform.parent = transform;
-			grassObj.isStatic = true;
+
+            // Instanced materials werken blijkbaar niet met static batching
+            //grassObj.isStatic = true;
 
 			return grassObj;
 		}
@@ -60,4 +62,11 @@ public class Lawn : MonoBehaviour
 			DestroyImmediate(transform.GetChild(transform.childCount - 1).gameObject);
 		}
 	}
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.color = new Color(1,1,0,0.6f);
+        Gizmos.DrawCube(Vector3.zero, Vector3.one);
+    }
 }
