@@ -16,6 +16,7 @@ public class CameraManager : MonoBehaviour
     private float _interactionDistance = 8f;
 
     private Camera _camera;
+    private Player _player;
 
     private Quaternion _restRotation;
     private Quaternion _interactionRotation;
@@ -31,6 +32,7 @@ public class CameraManager : MonoBehaviour
     protected void Awake()
     {
         _camera = Camera.main;
+        _player = transform.parent.GetComponentInChildren<Player>();
 
         _restRotation = _camera.transform.rotation;
         _interactionRotation = Quaternion.Euler(_camera.transform.eulerAngles - 30f * Vector3.right);
@@ -46,7 +48,7 @@ public class CameraManager : MonoBehaviour
                     _restRotation, 5f * Time.deltaTime);
 
                 _camera.transform.position = Vector3.Lerp(_camera.transform.position,
-                    transform.position - _followDistance * (_restRotation * Vector3.forward), 5f * Time.deltaTime);
+                    (transform.position - _followDistance * (_restRotation * Vector3.forward)) + _player.Direction*2f, 5f * Time.deltaTime);
                 break;
 
             case State.Interaction:

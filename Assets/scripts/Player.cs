@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     private State _currentState = State.Free;
 
     private Vector3 _direction;
+    private Vector3 _cosmeticDirection;
     private Vector3 _momentum;
     private Vector3 _upwardVel;
 
@@ -40,6 +41,11 @@ public class Player : MonoBehaviour
     // private EventInstance _purrEventInstance;
     private ParameterInstance _pawMovementParameterInstance;
     private ParameterInstance _furMovementParameterInstance;
+
+    public Vector3 Direction
+    {
+        get { return _cosmeticDirection; }
+    }
     // private ParameterInstance _purrParameterInstance = null;
     // private FMOD.Studio.ParameterInstance surfaceParameterInstance = null;
 
@@ -113,6 +119,7 @@ public class Player : MonoBehaviour
             }
 
             _direction = _direction.normalized;
+            _cosmeticDirection = _direction;
 
             float speed;
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
@@ -134,6 +141,7 @@ public class Player : MonoBehaviour
                 _upwardVel = _jumpForce * Vector3.up;
                 _direction += _upwardVel;
                 _currentState = State.Jump;
+                PlayVox();
             }
 
             if (_targetInteractive != null
@@ -165,9 +173,6 @@ public class Player : MonoBehaviour
         }
         else if (_currentState == State.Jump)
         {
-            Debug.Log("Jump");
-
-
             if (Input.GetKey(KeyCode.Space))
             {
                 _upwardVel *= 0.8f;
