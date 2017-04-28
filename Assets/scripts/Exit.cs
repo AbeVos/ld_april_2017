@@ -7,13 +7,13 @@ public class Exit : Interactive
 	protected override void Interaction(float time)
 	{
 		StopInteraction();
-		interactor.StopInteraction();
+		Interactor.StopInteraction();
 	}
 
 	public override void StopInteraction()
 	{
 		SetState(State.Finished);
-		UIManager.HidePrompt();
+		UiManager.HidePrompt();
 		GameManager.EndGame();
 	}
 }

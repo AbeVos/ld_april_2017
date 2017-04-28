@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Yarn : Interactive
 {
-	new protected Rigidbody rigidbody;
+	new protected Rigidbody Rigidbody;
 
 	protected void Awake()
 	{
-		rigidbody = GetComponent<Rigidbody>();
+		Rigidbody = GetComponent<Rigidbody>();
 	}
 
 	protected override void Interaction(float time)
 	{
-		Vector3 direction = (transform.position - interactor.transform.position).normalized;
+		Vector3 direction = (transform.position - Interactor.transform.position).normalized;
 
-		rigidbody.AddForce(0.1f * direction, ForceMode.Impulse);
+		Rigidbody.AddForce(0.1f * direction, ForceMode.Impulse);
 
 		StopInteraction();
-		interactor.StopInteraction();
+		Interactor.StopInteraction();
 	}
 }

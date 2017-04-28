@@ -11,7 +11,7 @@ public class Fish : Interactive
 		if (time >= 2f)
 		{
 			StopInteraction();
-			interactor.StopInteraction();
+			Interactor.StopInteraction();
 
 			Destroy(gameObject);
 		}

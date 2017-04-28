@@ -23,65 +23,65 @@ public enum Score
 public class Game : MonoBehaviour
 {
 	[SerializeField]
-	private bool load_scene = true;
+	private bool _loadScene = true;
 
-	private static Scenes current_scene = Scenes.None;
+	private static Scenes _currentScene = Scenes.None;
 
-	private static int[] score_values;
-	private static int[] scores;
+	private static int[] _scoreValues;
+	private static int[] _scores;
 
-	private static TextDispenser textDispenser;
-	private static Scoreboard scoreboard;
+	private static TextDispenser _textDispenser;
+	private static Scoreboard _scoreboard;
 
 	protected void Awake()
 	{
 		SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
-		if (load_scene)
+		if (_loadScene)
 		{
 			ChangeScene (Scenes.Main);
 		}
 
-		score_values = new int[] {100, 20, 30, 5, 60};
-		scores = new int[5];
+		_scoreValues = new int[] {100, 20, 30, 5, 60};
+		_scores = new int[5];
 
-		textDispenser = FindObjectOfType<TextDispenser>();
-		scoreboard = FindObjectOfType<Scoreboard>();
+		_textDispenser = FindObjectOfType<TextDispenser>();
+		_scoreboard = FindObjectOfType<Scoreboard>();
 	}
 
-	public static void ChangeScene(Scenes new_scene)
+	public static void ChangeScene(Scenes newScene)
 	{
-		Debug.Log ("Change scene from " + current_scene + " to " + new_scene);
+		Debug.Log ("Change scene from " + _currentScene + " to " + newScene);
 
-		if ((int)current_scene > 0) 
+		if ((int)_currentScene > 0) 
 		{
-			Debug.Log ("Unload " + current_scene);
-			SceneManager.UnloadSceneAsync((int)current_scene);
+			Debug.Log ("Unload " + _currentScene);
+			SceneManager.UnloadSceneAsync((int)_currentScene);
 		}
 
-		current_scene = new_scene;
+		_currentScene = newScene;
 
-		SceneManager.LoadSceneAsync((int)current_scene, LoadSceneMode.Additive);
+		SceneManager.LoadSceneAsync((int)_currentScene, LoadSceneMode.Additive);
 	}
 
 	public static void AddScore(Score type)
 	{
 		Debug.Log("Found a " + type.ToString() + "!");
-		scores[(int)type]++;
+		_scores[(int)type]++;
 
-		textDispenser.DispenseText();
+		_textDispenser.DispenseText();
 	}
 
 	private void SceneManager_sceneLoaded (Scene scene, LoadSceneMode loadSceneMode)
 	{
 		if (scene.buildIndex == 3)
 		{
-			scoreboard.gameObject.SetActive(true);
-			scoreboard.SetScore(scores, score_values);
+			_scoreboard.gameObject.SetActive(true);
+			_scoreboard.SetScore(_scores, _scoreValues);
 		}
 		else
 		{
-			scoreboard.gameObject.SetActive(false);
+			_scoreboard.gameObject.SetActive(false);
 		}	
 	}
 }

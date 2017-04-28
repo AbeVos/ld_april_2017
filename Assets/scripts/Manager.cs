@@ -5,11 +5,11 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
 	[SerializeField]
-	protected Scenes next_scene;
+	protected Scenes NextScene;
 
 	protected virtual void Awake()
 	{
-		UIManager.FadeIn ();
+		UiManager.FadeIn ();
 	}
 
 	protected virtual void Update()
@@ -22,7 +22,7 @@ public class Manager : MonoBehaviour
 
 	protected void ChangeScene()
 	{
-		UIManager.FadeOut();
+		UiManager.FadeOut();
 
 		StartCoroutine(FadeOut(1f));
 	}
@@ -31,6 +31,6 @@ public class Manager : MonoBehaviour
 	{
 		yield return new WaitForSeconds (time);
 
-		Game.ChangeScene (next_scene);
+		Game.ChangeScene (NextScene);
 	}
 }

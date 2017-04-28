@@ -25,12 +25,12 @@ public abstract class Interactive : MonoBehaviour
 	[SerializeField]
 	protected bool skippable = false;
 	[SerializeField]
-	protected bool repeatable = false;
+	protected bool Repeatable = false;
 
-	protected State current_state = State.Idle;
-	protected float t = 0f;
+	protected State CurrentState = State.Idle;
+	protected float T = 0f;
 
-	protected Player interactor;
+	protected Player Interactor;
 
 	public Score Type
 	{ 
@@ -41,23 +41,23 @@ public abstract class Interactive : MonoBehaviour
 
 	protected virtual void Update()
 	{
-		if (current_state == State.Interact)
+		if (CurrentState == State.Interact)
 		{
-			Interaction(t);
+			Interaction(T);
 		}
 
-		t += Time.deltaTime;
+		T += Time.deltaTime;
 	}
 
 	protected void OnTriggerEnter(Collider col)
 	{
-		if (current_state == State.Finished) return;
+		if (CurrentState == State.Finished) return;
 
 		Player player = col.GetComponent<Player> ();
 
 		if (player != null)
 		{
-			interactor = player;
+			Interactor = player;
 			player.SetTargetInteractive (this);
 		}
 	}
@@ -75,7 +75,7 @@ public abstract class Interactive : MonoBehaviour
 
 	public bool StartInteraction()
 	{
-		if (current_state == State.Finished)
+		if (CurrentState == State.Finished)
 		{
 			return false;
 		}
@@ -90,7 +90,7 @@ public abstract class Interactive : MonoBehaviour
 	{
 		Game.AddScore(type);
 
-		if (repeatable)
+		if (Repeatable)
 		{
 			SetState(State.Idle);
 		}
@@ -104,7 +104,7 @@ public abstract class Interactive : MonoBehaviour
 
 	protected virtual void SetState(State state)
 	{
-		current_state = state;
-		t = 0f;
+		CurrentState = state;
+		T = 0f;
 	}
 }

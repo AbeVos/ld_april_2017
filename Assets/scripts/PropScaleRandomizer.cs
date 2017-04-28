@@ -11,7 +11,7 @@ public class PropScaleRandomizer : MonoBehaviour
             Random.Range(_yRange.x, _yRange.y) * transform.localScale.y,
             Random.Range(_zRange.x, _zRange.y) * transform.localScale.z);
 
-        transform.localScale =  newScale;
+        transform.localScale = newScale;
     }
 
 }

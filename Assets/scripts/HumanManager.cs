@@ -4,52 +4,50 @@ using UnityEngine;
 
 public class HumanManager : MonoBehaviour
 {
-	[SerializeField]
-	private GameObject human_prefab;
-	[SerializeField]
-	private int max_humans = 5;
+    [SerializeField]
+    private int _maxHumans = 5;
 
-	private List<Human> humans;
+    private List<Human> _humans;
 
-	private PointOfInterest[] points_of_interest;
-	private HumanSpawner[] spawners;
+    private PointOfInterest[] _pointsOfInterest;
+    private HumanSpawner[] _spawners;
 
-	protected void Awake()
-	{
-		points_of_interest = transform.GetComponentsInChildren<PointOfInterest>();
-		spawners = transform.GetComponentsInChildren<HumanSpawner>();
+    protected void Awake()
+    {
+        _pointsOfInterest = transform.GetComponentsInChildren<PointOfInterest>();
+        _spawners = transform.GetComponentsInChildren<HumanSpawner>();
 
-		humans = new List<Human>();
-	}
+        _humans = new List<Human>();
+    }
 
-	protected void Update()
-	{
-		if (humans.Count < max_humans)
-		{
-			HumanSpawner spawner = spawners[Random.Range(0, spawners.Length)];
+    protected void Update()
+    {
+        if (_humans.Count < _maxHumans)
+        {
+            HumanSpawner spawner = _spawners[Random.Range(0, _spawners.Length)];
 
-			humans.Add(spawner.SpawnHuman(transform));
-		}
-	}
+            _humans.Add(spawner.SpawnHuman(transform));
+        }
+    }
 
-	protected void OnDrawGizmos()
-	{
-		points_of_interest = transform.GetComponentsInChildren<PointOfInterest>();
+    protected void OnDrawGizmos()
+    {
+        _pointsOfInterest = transform.GetComponentsInChildren<PointOfInterest>();
 
-		Gizmos.color = Color.red;
-		foreach (PointOfInterest poi in points_of_interest)
-		{
-			Gizmos.DrawSphere(poi.transform.position, 1.8f);
-		}
-	}
+        Gizmos.color = Color.red;
+        foreach (PointOfInterest poi in _pointsOfInterest)
+        {
+            Gizmos.DrawSphere(poi.transform.position, 1.8f);
+        }
+    }
 
-	public Vector3 GetPointOfInterest()
-	{
-		return points_of_interest[Random.Range(0, points_of_interest.Length-1)].transform.position;
-	}
+    public Vector3 GetPointOfInterest()
+    {
+        return _pointsOfInterest[Random.Range(0, _pointsOfInterest.Length - 1)].transform.position;
+    }
 
-	public void RemoveHuman(Human human)
-	{
-		humans.Remove(human);
-	}
+    public void RemoveHuman(Human human)
+    {
+        _humans.Remove(human);
+    }
 }

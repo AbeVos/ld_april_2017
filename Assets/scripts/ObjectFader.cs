@@ -6,16 +6,16 @@ using UnityEngine;
 
 public class ObjectFader : MonoBehaviour
 {
-    private List<Transform> blockingObjects;
-    private List<Transform> nonBlockingObjects;
-    private Color originalColor;
-    private RaycastHit[] hits;
+    private List<Transform> _blockingObjects;
+    private List<Transform> _nonBlockingObjects;
+    private Color _originalColor;
+    private RaycastHit[] _hits;
 
     // Use this for initialization
     private void Start()
     {
-        blockingObjects = new List<Transform>();
-        nonBlockingObjects = new List<Transform>();
+        _blockingObjects = new List<Transform>();
+        _nonBlockingObjects = new List<Transform>();
     }
 
     // Update is called once per frame
@@ -23,24 +23,24 @@ public class ObjectFader : MonoBehaviour
     {
         Ray ray = new Ray(transform.position, Camera.main.transform.position - transform.position);
 
-        foreach (Transform blockingObject in blockingObjects)
+        foreach (Transform blockingObject in _blockingObjects)
         {
-            hits = Physics.RaycastAll(ray, 30, 1 << LayerMask.NameToLayer("BlocksView"));
-            bool contains_block_obj = false;
+            _hits = Physics.RaycastAll(ray, 30, 1 << LayerMask.NameToLayer("BlocksView"));
+            bool containsBlockObj = false;
 
-            foreach (RaycastHit hit in hits)
+            foreach (RaycastHit hit in _hits)
             {
                 if (hit.transform == blockingObject)
                 {
-                    contains_block_obj = true;
+                    containsBlockObj = true;
                     break;
                 }
             }
 
-            if (!contains_block_obj)
+            if (!containsBlockObj)
             {
-                nonBlockingObjects.Add(blockingObject);
-                blockingObjects.Remove(blockingObject);
+                _nonBlockingObjects.Add(blockingObject);
+                _blockingObjects.Remove(blockingObject);
                 break;
             }
 
@@ -48,17 +48,17 @@ public class ObjectFader : MonoBehaviour
             material.color = Color.Lerp(material.color, new Color(material.color.r, material.color.g, material.color.b, 0.3f), Time.deltaTime*2);
         }
 
-        hits = Physics.RaycastAll(ray, 30, 1 << LayerMask.NameToLayer("BlocksView"));
+        _hits = Physics.RaycastAll(ray, 30, 1 << LayerMask.NameToLayer("BlocksView"));
 
-        foreach (RaycastHit hit in hits)
+        foreach (RaycastHit hit in _hits)
         {
-            if (!blockingObjects.Contains(hit.transform))
+            if (!_blockingObjects.Contains(hit.transform))
             {
-                blockingObjects.Add(hit.transform);
+                _blockingObjects.Add(hit.transform);
             }
         }
 
-        foreach (Transform nonBlockingObject in nonBlockingObjects)
+        foreach (Transform nonBlockingObject in _nonBlockingObjects)
         {
             Material material = nonBlockingObject.GetComponent<MeshRenderer>().material;
             material.color = Color.Lerp(material.color, new Color(material.color.r, material.color.g, material.color.b, 1), Time.deltaTime*2);
@@ -66,7 +66,7 @@ public class ObjectFader : MonoBehaviour
             if (material.color.a > 0.95f)
             {
                 material.color = new Color(material.color.r, material.color.g, material.color.b, 1);
-                nonBlockingObjects.Remove(nonBlockingObject);
+                _nonBlockingObjects.Remove(nonBlockingObject);
                 break;
                 // Abe is beste B -1
             }

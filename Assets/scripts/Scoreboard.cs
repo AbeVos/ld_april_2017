@@ -6,48 +6,48 @@ using UnityEngine.UI;
 
 public class Scoreboard : MonoBehaviour
 {
-	private Text objects_text;
-	private Text scores_text;
-	private Text values_text;
+	private Text _objectsText;
+	private Text _scoresText;
+	private Text _valuesText;
 
 	protected void Awake()
 	{
-		objects_text = transform.GetChild(1).GetComponent<Text>();
-		scores_text = transform.GetChild(2).GetComponent<Text>();
-		values_text = transform.GetChild(3).GetComponent<Text>();
+		_objectsText = transform.GetChild(1).GetComponent<Text>();
+		_scoresText = transform.GetChild(2).GetComponent<Text>();
+		_valuesText = transform.GetChild(3).GetComponent<Text>();
 
 		string[] names = System.Enum.GetNames(typeof(Score));
 
-		objects_text.text = "";
+		_objectsText.text = "";
 		for (int i=0; i < names.Length; i++)
 		{
-			objects_text.text += AddSpacesToSentence(names[i], false) + "\n";
+			_objectsText.text += AddSpacesToSentence(names[i], false) + "\n";
 		}
-		objects_text.text += "\n\nTotal:";
+		_objectsText.text += "\n\nTotal:";
 	}
 
-	public void SetScore(int[] scores, int[] score_values)
+	public void SetScore(int[] scores, int[] scoreValues)
 	{
-		scores_text.text = "";
+		_scoresText.text = "";
 		for (int i=0; i < scores.Length; i++)
 		{
-			scores_text.text += scores[i] + "\n";
+			_scoresText.text += scores[i] + "\n";
 		}
 
-		values_text.text = "";
+		_valuesText.text = "";
 		for (int i=0; i < scores.Length; i++)
 		{
-			values_text.text += "x " + score_values[i] + "\n";
+			_valuesText.text += "x " + scoreValues[i] + "\n";
 		}
 
-		int total_score = 0;
+		int totalScore = 0;
 
 		for (int i=0; i < scores.Length; i++)
 		{
-			total_score += scores[i] * score_values[i];
+			totalScore += scores[i] * scoreValues[i];
 		}
 
-		scores_text.text += "\n\n" + total_score + "pts.";
+		_scoresText.text += "\n\n" + totalScore + "pts.";
 	}
 
 	private string AddSpacesToSentence(string text, bool preserveAcronyms)

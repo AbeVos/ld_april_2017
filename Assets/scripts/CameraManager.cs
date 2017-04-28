@@ -11,53 +11,53 @@ public class CameraManager : MonoBehaviour
 	}
 
 	[SerializeField]
-	private float follow_distance = 16f;
+	private float _followDistance = 16f;
 	[SerializeField]
-	private float interaction_distance = 8f;
+	private float _interactionDistance = 8f;
 
-	new private Camera camera;
+	private Camera _camera;
 
-	private Quaternion rest_rotation;
-	private Quaternion interaction_rotation;
-	private Vector3 forward;
+	private Quaternion _restRotation;
+	private Quaternion _interactionRotation;
+	private Vector3 _forward;
 
-	private State current_state = State.Following;
+	private State _currentState = State.Following;
 
-	public Camera Camera { get { return camera; } }
+	public Camera Camera { get { return _camera; } }
 
-	public Vector3 Forward { get { return forward; } }
-	public Vector3 Right { get { return camera.transform.right; } }
+	public Vector3 Forward { get { return _forward; } }
+	public Vector3 Right { get { return _camera.transform.right; } }
 
 	protected void Awake()
 	{
-		camera = Camera.main;
+		_camera = Camera.main;
 
-		rest_rotation = camera.transform.rotation;
-		interaction_rotation = Quaternion.Euler(camera.transform.eulerAngles - 30f * Vector3.right);
-		forward = Vector3.Cross (camera.transform.right, Vector3.up);
+		_restRotation = _camera.transform.rotation;
+		_interactionRotation = Quaternion.Euler(_camera.transform.eulerAngles - 30f * Vector3.right);
+		_forward = Vector3.Cross (_camera.transform.right, Vector3.up);
 	}
 
 	protected void Update()
 	{
-		switch (current_state)
+		switch (_currentState)
 		{
 		case State.Following:
-			camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation,
-				rest_rotation,
+			_camera.transform.rotation = Quaternion.Lerp(_camera.transform.rotation,
+				_restRotation,
 				5f * Time.deltaTime);
 
-			camera.transform.position = Vector3.Lerp (camera.transform.position,
-				transform.position - follow_distance * (rest_rotation * Vector3.forward),
+			_camera.transform.position = Vector3.Lerp (_camera.transform.position,
+				transform.position - _followDistance * (_restRotation * Vector3.forward),
 				5f * Time.deltaTime);
 			break;
 		
 		case State.Interaction:
-			camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation,
-				interaction_rotation,
+			_camera.transform.rotation = Quaternion.Lerp(_camera.transform.rotation,
+				_interactionRotation,
 				3f * Time.deltaTime);
 			
-			camera.transform.position = Vector3.Lerp (camera.transform.position,
-				transform.position - interaction_distance * (interaction_rotation * Vector3.forward),
+			_camera.transform.position = Vector3.Lerp (_camera.transform.position,
+				transform.position - _interactionDistance * (_interactionRotation * Vector3.forward),
 				3f * Time.deltaTime);
 			break;
 		}
@@ -65,11 +65,11 @@ public class CameraManager : MonoBehaviour
 
 	public void StartInteraction()
 	{
-		current_state = State.Interaction;
+		_currentState = State.Interaction;
 	}
 
 	public void StopInteraction()
 	{
-		current_state = State.Following;
+		_currentState = State.Following;
 	}
 }

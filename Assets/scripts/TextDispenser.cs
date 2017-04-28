@@ -5,28 +5,28 @@ using UnityEngine.UI;
 
 public class TextDispenser : MonoBehaviour
 {
-	private Text text_object;
-	private RectTransform text_transform;
+	private Text _textObject;
+	private RectTransform _textTransform;
 
-	private string[] messages;
+	private string[] _messages;
 
-	private bool dispensing_text = false;
-	private float t = 0f;
+	private bool _dispensingText = false;
+	private float _t = 0f;
 
     [SerializeField, FMODUnity.EventRef]
-    private string xpEventRef;
-    private FMOD.Studio.EventInstance xpEventInstance;
+    private string _xpEventRef;
+    private FMOD.Studio.EventInstance _xpEventInstance;
 
     protected void Awake()
 	{
-		text_object = GetComponentInChildren<Text>();
-		text_transform = text_object.GetComponent<RectTransform>();
+		_textObject = GetComponentInChildren<Text>();
+		_textTransform = _textObject.GetComponent<RectTransform>();
 
 	    if (Application.platform != RuntimePlatform.LinuxEditor)
-            xpEventInstance = FMODUnity.RuntimeManager.CreateInstance(xpEventRef);
+            _xpEventInstance = FMODUnity.RuntimeManager.CreateInstance(_xpEventRef);
         //text_object.enabled = false;
 
-        messages = new string[] {
+        _messages = new string[] {
 			"PURRfect!",
 			"FURry Good!",
 			"Nice CATch!",
@@ -43,40 +43,40 @@ public class TextDispenser : MonoBehaviour
 
 	protected void Update()
 	{
-		if (dispensing_text)
+		if (_dispensingText)
 		{
-			text_transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+			_textTransform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, _t);
 			//text_transform.anchoredPosition = 500f * (Mathf.Pow(2f * t - 1f, 2) - 1f) * Vector3.up;
-			text_transform.anchoredPosition = 500f * 4 * Mathf.Pow(t, 2) * (t - 1) * Vector2.up;
+			_textTransform.anchoredPosition = 500f * 4 * Mathf.Pow(_t, 2) * (_t - 1) * Vector2.up;
 
-			t += Time.deltaTime;
+			_t += Time.deltaTime;
 
-			if (t >= 1f)
+			if (_t >= 1f)
 			{
-				dispensing_text = false;
+				_dispensingText = false;
 			}
 
-			text_object.color = Color.Lerp(text_object.color, Color.white, 3f * Time.deltaTime);	
+			_textObject.color = Color.Lerp(_textObject.color, Color.white, 3f * Time.deltaTime);	
 		}
 		else
 		{
-			text_object.color = Color.Lerp(text_object.color, new Color(1,1,1,0), 3f * Time.deltaTime);
-			text_transform.anchoredPosition += 5f * Vector2.up;
+			_textObject.color = Color.Lerp(_textObject.color, new Color(1,1,1,0), 3f * Time.deltaTime);
+			_textTransform.anchoredPosition += 5f * Vector2.up;
 		}
 	}
 
 	public void DispenseText()
 	{
-		if (dispensing_text == true) return;
+		if (_dispensingText) return;
 	    if (Application.platform != RuntimePlatform.LinuxEditor)
-            xpEventInstance.start();
+            _xpEventInstance.start();
 
-		text_object.text = messages[Random.Range(0,messages.Length)];
+		_textObject.text = _messages[Random.Range(0,_messages.Length)];
 
-		dispensing_text = true;
-		t = 0f;
+		_dispensingText = true;
+		_t = 0f;
 
-		text_transform.localScale = Vector3.zero;
-		text_object.enabled = true;
+		_textTransform.localScale = Vector3.zero;
+		_textObject.enabled = true;
 	}
 }

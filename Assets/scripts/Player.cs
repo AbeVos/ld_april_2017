@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,175 +11,175 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField]
-    private float walk_speed = 1f;
+    private float _walkSpeed = 1f;
     [SerializeField]
-    private float run_speed = 4f;
+    private float _runSpeed = 4f;
     //TODO: Create sprint button
 
-    private float jump_force = 20f;
-    private float gravity = 5.0f;
+    private float _jumpForce = 20f;
+    private float _gravity = 5.0f;
 
-    private CharacterController controller;
-    new private CameraManager camera;
-    private Transform avatar;
-    private Animator animationController;
+    private CharacterController _controller;
+    private CameraManager _camera;
+    private Transform _avatar;
+    private Animator _animationController;
 
-    private State current_state = State.Free;
+    private State _currentState = State.Free;
 
-    private Vector3 direction;
-    private Vector3 momentum;
-    private Vector3 upward_vel;
+    private Vector3 _direction;
+    private Vector3 _momentum;
+    private Vector3 _upwardVel;
 
-    private Interactive target_interactive;
+    private Interactive _targetInteractive;
 
     [SerializeField, FMODUnity.EventRef]
-    private string pawEventRef, furEventRef, voxEventRef, purrEventRef;
-    private EventInstance pawEventInstance;
-    private EventInstance furEventInstance;
-    private EventInstance voxEventInstance;
-    private EventInstance purrEventInstance;
-    private ParameterInstance pawMovementParameterInstance;
-    private ParameterInstance furMovementParameterInstance = null;
-    private ParameterInstance purrParameterInstance = null;
+    private string _pawEventRef, _furEventRef, _voxEventRef, _purrEventRef;
+    private EventInstance _pawEventInstance;
+    private EventInstance _furEventInstance;
+    private EventInstance _voxEventInstance;
+    private EventInstance _purrEventInstance;
+    private ParameterInstance _pawMovementParameterInstance;
+    private ParameterInstance _furMovementParameterInstance = null;
+    private ParameterInstance _purrParameterInstance = null;
     // private FMOD.Studio.ParameterInstance surfaceParameterInstance = null;
 
     protected void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        camera = GetComponent<CameraManager>();
-        avatar = transform.GetChild(0);
-        animationController = avatar.GetComponentInChildren<Animator>();
+        _controller = GetComponent<CharacterController>();
+        _camera = GetComponent<CameraManager>();
+        _avatar = transform.GetChild(0);
+        _animationController = _avatar.GetComponentInChildren<Animator>();
 
-        direction = new Vector3();
+        _direction = new Vector3();
         if (Application.platform != RuntimePlatform.LinuxEditor)
             SetupFmodEvents();
     }
 
     private void SetupFmodEvents()
     {
-        if (pawEventInstance == null)
+        if (_pawEventInstance == null)
         {
-            pawEventInstance = FMODUnity.RuntimeManager.CreateInstance(pawEventRef);
-            pawEventInstance.getParameter("cat_paws_movement", out pawMovementParameterInstance);
+            _pawEventInstance = FMODUnity.RuntimeManager.CreateInstance(_pawEventRef);
+            _pawEventInstance.getParameter("cat_paws_movement", out _pawMovementParameterInstance);
         }
 
-        if (furEventInstance == null)
+        if (_furEventInstance == null)
         {
-            furEventInstance = FMODUnity.RuntimeManager.CreateInstance(furEventRef);
-            furEventInstance.getParameter("cat_fur_movement", out furMovementParameterInstance);
+            _furEventInstance = FMODUnity.RuntimeManager.CreateInstance(_furEventRef);
+            _furEventInstance.getParameter("cat_fur_movement", out _furMovementParameterInstance);
         }
 
-        if (voxEventInstance == null)
+        if (_voxEventInstance == null)
         {
-            voxEventInstance = FMODUnity.RuntimeManager.CreateInstance(voxEventRef);
+            _voxEventInstance = FMODUnity.RuntimeManager.CreateInstance(_voxEventRef);
         }
 
-        if (purrEventInstance == null)
+        if (_purrEventInstance == null)
         {
-            purrEventInstance = FMODUnity.RuntimeManager.CreateInstance(purrEventRef);
+            _purrEventInstance = FMODUnity.RuntimeManager.CreateInstance(_purrEventRef);
         }
 
         // purr loops
-        purrEventInstance.start();
+        _purrEventInstance.start();
     }
 
     protected void Update()
     {
-        direction = Vector3.zero;
+        _direction = Vector3.zero;
 
-        if (current_state == State.Free)
+        if (_currentState == State.Free)
         {
             if (Input.GetKey(KeyCode.W))
             {
-                direction += camera.Forward;
+                _direction += _camera.Forward;
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                direction -= camera.Forward;
+                _direction -= _camera.Forward;
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                direction += camera.Right;
+                _direction += _camera.Right;
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                direction -= camera.Right;
+                _direction -= _camera.Right;
             }
 
-            direction = direction.normalized;
+            _direction = _direction.normalized;
 
             float speed;
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
-                speed = run_speed;
+                speed = _runSpeed;
             }
             else
             {
-                speed = walk_speed;
+                speed = _walkSpeed;
             }
 
-            TurnAvatar(run_speed);
-            controller.Move(Time.deltaTime * (direction.magnitude * avatar.forward * speed + gravity * Vector3.down));
-            animationController.SetFloat("speed", controller.velocity.magnitude);
+            TurnAvatar(_runSpeed);
+            _controller.Move(Time.deltaTime * (_direction.magnitude * _avatar.forward * speed + _gravity * Vector3.down));
+            _animationController.SetFloat("speed", _controller.velocity.magnitude);
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                momentum = speed * direction;
-                upward_vel = jump_force * Vector3.up;
-                direction += upward_vel;
-                current_state = State.Jump;
+                _momentum = speed * _direction;
+                _upwardVel = _jumpForce * Vector3.up;
+                _direction += _upwardVel;
+                _currentState = State.Jump;
             }
 
-            if (target_interactive != null
+            if (_targetInteractive != null
                 && Input.GetKey(KeyCode.E))
             {
-                bool has_started = target_interactive.StartInteraction();
+                bool hasStarted = _targetInteractive.StartInteraction();
 
-                if (has_started)
+                if (hasStarted)
                 {
                     Debug.Log("Start interaction");
-                    animationController.SetBool("interacting", true);
+                    _animationController.SetBool("interacting", true);
                     PlayVox();
-                    camera.StartInteraction();
-                    current_state = State.Interaction;
+                    _camera.StartInteraction();
+                    _currentState = State.Interaction;
                 }
             }
         }
-        else if (current_state == State.Interaction)
+        else if (_currentState == State.Interaction)
         {
 
             // Stop interaction manually
             if (Input.GetKey(KeyCode.E)
-                && target_interactive.Skippable)
+                && _targetInteractive.Skippable)
             {
                 StopPurr();
-                target_interactive.StopInteraction();
+                _targetInteractive.StopInteraction();
                 StopInteraction();
             }
         }
-        else if (current_state == State.Jump)
+        else if (_currentState == State.Jump)
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                upward_vel *= 0.8f;
+                _upwardVel *= 0.8f;
             }
             else
             {
-                upward_vel *= 0.5f;
+                _upwardVel *= 0.5f;
             }
 
-            direction = upward_vel + 2f * momentum;
+            _direction = _upwardVel + 2f * _momentum;
 
-            animationController.SetBool("jump", true);
-            controller.Move(Time.deltaTime * (direction + gravity * Vector3.down));
+            _animationController.SetBool("jump", true);
+            _controller.Move(Time.deltaTime * (_direction + _gravity * Vector3.down));
 
             Ray ray = new Ray(transform.position, Vector3.down);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 0.2f, 1 << LayerMask.NameToLayer("Floor")))
             {
-                animationController.SetBool("jump", false);
-                current_state = State.Free;
+                _animationController.SetBool("jump", false);
+                _currentState = State.Free;
             }
         }
     }
@@ -191,15 +189,15 @@ public class Player : MonoBehaviour
     /// </summary>
     public void SetTargetInteractive(Interactive interactive)
     {
-        target_interactive = interactive;
+        _targetInteractive = interactive;
 
-        if (target_interactive == null)
+        if (_targetInteractive == null)
         {
-            UIManager.HidePrompt();
+            UiManager.HidePrompt();
         }
         else
         {
-            UIManager.ShowPrompt("Press E to interact", target_interactive.transform);
+            UiManager.ShowPrompt("Press E to interact", _targetInteractive.transform);
         }
     }
 
@@ -208,53 +206,51 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StopInteraction()
     {
-        current_state = State.Free;
-        camera.StopInteraction();
-        animationController.SetBool("interacting", false);
+        _currentState = State.Free;
+        _camera.StopInteraction();
+        _animationController.SetBool("interacting", false);
     }
 
     public void PlayFootstepSound()
     {
-        if (Application.platform == RuntimePlatform.LinuxEditor) { return;}
+        if (Application.platform == RuntimePlatform.LinuxEditor) { return; }
 
-        if (current_state == State.Free)
+        if (_currentState == State.Free)
         {
-            pawMovementParameterInstance.setValue(momentum.magnitude / (run_speed * .6f));
-            furMovementParameterInstance.setValue(momentum.magnitude / (run_speed * .6f));
+            _pawMovementParameterInstance.setValue(_momentum.magnitude / (_runSpeed * .6f));
+            _furMovementParameterInstance.setValue(_momentum.magnitude / (_runSpeed * .6f));
         }
 
-        pawEventInstance.start();
-        furEventInstance.start();
+        _pawEventInstance.start();
+        _furEventInstance.start();
     }
 
     public void StartPurr()
     {
         if (Application.platform != RuntimePlatform.LinuxEditor)
-            purrParameterInstance.setValue(1);
+            _purrParameterInstance.setValue(1);
     }
 
     public void StopPurr()
     {
         if (Application.platform != RuntimePlatform.LinuxEditor)
-            purrParameterInstance.setValue(0);
+            _purrParameterInstance.setValue(0);
     }
 
     public void PlayVox()
     {
         if (Application.platform != RuntimePlatform.LinuxEditor)
-            voxEventInstance.start();
+            _voxEventInstance.start();
     }
 
     private void TurnAvatar(float speed)
     {
-        if (direction.sqrMagnitude > 0)
+        if (_direction.sqrMagnitude > 0)
         {
-            avatar.rotation = Quaternion.Lerp(
-                avatar.rotation,
-                Quaternion.LookRotation(direction),
+            _avatar.rotation = Quaternion.Lerp(
+                _avatar.rotation,
+                Quaternion.LookRotation(_direction),
                 2f * speed * Time.deltaTime);
         }
     }
-
-
 }

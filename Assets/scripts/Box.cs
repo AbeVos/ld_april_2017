@@ -8,16 +8,16 @@ public class Box : Interactive
 	{
 		GetComponent<BoxCollider>().enabled = false;
 		GetComponent<SphereCollider>().enabled = false;
-		interactor.transform.position = Vector3.Lerp(interactor.transform.position, transform.position, 5f * Time.deltaTime);
+		Interactor.transform.position = Vector3.Lerp(Interactor.transform.position, transform.position, 5f * Time.deltaTime);
 
 		if (time >= 2f)
 		{
-			interactor.transform.position += transform.forward;
+			Interactor.transform.position += transform.forward;
 			GetComponent<BoxCollider>().enabled = true;
 			GetComponent<SphereCollider>().enabled = true;
 
 			StopInteraction();
-			interactor.StopInteraction();
+			Interactor.StopInteraction();
 		}
 	}
 }
