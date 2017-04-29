@@ -35,11 +35,15 @@ public class Human : Interactive
 
     private void SetupFmod()
     {
-        var attributes = FMODUnity.RuntimeUtils.To3DAttributes(transform);
-
         _reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(VoiceType == HumanVoiceType.Masculine ? _masReactionEventRef : _femReactionEventRef);
         _walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(_walkEventRef);
 
+        Set3DAtributes();
+    }
+
+    private void Set3DAtributes()
+    {
+        var attributes = FMODUnity.RuntimeUtils.To3DAttributes(transform);
         _reactionEventInstance.set3DAttributes(attributes);
         _walkEventInstance.set3DAttributes(attributes);
     }
@@ -79,7 +83,10 @@ public class Human : Interactive
             transform.position += T * Vector3.up;
             transform.eulerAngles += T * 50f * Vector3.up;
 
-            if (T >= 3f)
+            transform.GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(2).gameObject.SetActive(true);
+
+            if (T >= 4f)
             {
                 GameManager.HumanManager.RemoveHuman(this);
                 Destroy(gameObject);

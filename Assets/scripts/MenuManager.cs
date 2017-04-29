@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MenuManager : Manager
 {
 	protected override void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.Space))
+		if (Input.GetButtonDown("Fire1"))
 		{
 			ChangeScene ();
 		}

@@ -13,10 +13,12 @@ public class Manager : MonoBehaviour
 
 	protected virtual void Update()
 	{
+        /*
 		if (Input.GetKeyDown (KeyCode.Escape))
 		{
 			ChangeScene ();
 		}
+        */
 	}
 
 	protected void ChangeScene()

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class ObjectFader : MonoBehaviour
 {
+    [SerializeField] private Shader _opaqueShader, _fadeShader;
+
     private List<Transform> _blockingObjects;
     private List<Transform> _nonBlockingObjects;
     private Color _originalColor;
@@ -18,7 +20,6 @@ public class ObjectFader : MonoBehaviour
         _nonBlockingObjects = new List<Transform>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         Ray ray = new Ray(transform.position, Camera.main.transform.position - transform.position);
@@ -44,7 +45,10 @@ public class ObjectFader : MonoBehaviour
                 break;
             }
 
-            Material material = blockingObject.GetComponent<MeshRenderer>().material; 
+            // The object is blocking so the shader must change
+            Material material = blockingObject.GetComponent<MeshRenderer>().material;
+            material.shader = _fadeShader;
+            material.renderQueue = 3000;
             material.color = Color.Lerp(material.color, new Color(material.color.r, material.color.g, material.color.b, 0.3f), Time.deltaTime*2);
         }
 
@@ -65,6 +69,7 @@ public class ObjectFader : MonoBehaviour
 
             if (material.color.a > 0.95f)
             {
+                material.shader = _opaqueShader;
                 material.color = new Color(material.color.r, material.color.g, material.color.b, 1);
                 _nonBlockingObjects.Remove(nonBlockingObject);
                 break;

@@ -16,11 +16,11 @@
 		
 		LOD 200
 		Blend SrcAlpha OneMinusSrcAlpha
-		ZWrite Off
+		ZWrite On
 		Cull Back
 
 		CGPROGRAM
-		#pragma surface surf CelShadingForward alpha
+		#pragma surface surf CelShadingForward alpha:fade
 		#pragma target 3.0
 
 		half4 LightingCelShadingForward(SurfaceOutput s, half3 lightDir, half atten) 
