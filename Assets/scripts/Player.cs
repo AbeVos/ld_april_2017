@@ -1,5 +1,4 @@
-﻿using FMOD.Studio;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -31,23 +30,13 @@ public class Player : MonoBehaviour
     private Vector3 _momentum;
     private Vector3 _upwardVel;
 
+    private RandomModulatedAudio vox;
     private Interactive _targetInteractive;
-
-    [SerializeField, FMODUnity.EventRef]
-    private string _pawEventRef, _furEventRef, _voxEventRef, _purrEventRef;
-    private EventInstance _pawEventInstance;
-    private EventInstance _furEventInstance;
-    private EventInstance _voxEventInstance;
-    // private EventInstance _purrEventInstance;
-    private ParameterInstance _pawMovementParameterInstance;
-    private ParameterInstance _furMovementParameterInstance;
 
     public Vector3 Direction
     {
         get { return _cosmeticDirection; }
     }
-    // private ParameterInstance _purrParameterInstance = null;
-    // private FMOD.Studio.ParameterInstance surfaceParameterInstance = null;
 
     protected void Awake()
     {
@@ -57,41 +46,8 @@ public class Player : MonoBehaviour
         _animationController = _avatar.GetComponentInChildren<Animator>();
 
         _direction = new Vector3();
-        if (Application.platform != RuntimePlatform.LinuxEditor)
-            SetupFmodEvents();
-    }
 
-    private void SetupFmodEvents()
-    {
-        var attributes = FMODUnity.RuntimeUtils.To3DAttributes(transform);
-
-        if (_pawEventInstance == null)
-        {
-            _pawEventInstance = FMODUnity.RuntimeManager.CreateInstance(_pawEventRef);
-            _pawEventInstance.getParameter("cat_paws_movement", out _pawMovementParameterInstance);
-            _pawEventInstance.set3DAttributes(attributes);
-        }
-
-        if (_furEventInstance == null)
-        {
-            _furEventInstance = FMODUnity.RuntimeManager.CreateInstance(_furEventRef);
-            _furEventInstance.getParameter("cat_fur_movement", out _furMovementParameterInstance);
-            _furEventInstance.set3DAttributes(attributes);
-        }
-
-        if (_voxEventInstance == null)
-        {
-            _voxEventInstance = FMODUnity.RuntimeManager.CreateInstance(_voxEventRef);
-            _voxEventInstance.set3DAttributes(attributes);
-        }
-
-        //if (_purrEventInstance == null)
-        //{
-        //    _purrEventInstance = FMODUnity.RuntimeManager.CreateInstance(_purrEventRef);
-        //}
-
-        //// purr loops
-        //_purrEventInstance.start();
+        vox = GetComponent<RandomModulatedAudio>();
     }
 
     protected void Update()
@@ -227,16 +183,10 @@ public class Player : MonoBehaviour
 
     public void PlayFootstepSound()
     {
-        if (Application.platform == RuntimePlatform.LinuxEditor) { return; }
-
         if (_currentState == State.Free)
         {
-            _pawMovementParameterInstance.setValue(_momentum.magnitude / (_runSpeed * .6f));
-            _furMovementParameterInstance.setValue(_momentum.magnitude / (_runSpeed * .6f));
+            // TODO: Play footsteps / fur
         }
-
-        _pawEventInstance.start();
-        _furEventInstance.start();
     }
 
     //public void StartPurr()
@@ -253,8 +203,8 @@ public class Player : MonoBehaviour
 
     public void PlayVox()
     {
-        if (Application.platform != RuntimePlatform.LinuxEditor)
-            _voxEventInstance.start();
+        vox.Play();
+        // TODO: Play vox
     }
 
     private void TurnAvatar(float speed)

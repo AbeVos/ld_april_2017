@@ -14,7 +14,7 @@ public class HumanSpawner : MonoBehaviour
 
     protected void Awake()
     {
-        _door = transform.FindChild("Door");
+        _door = transform.Find("Door");
     }
 
     protected void Update()

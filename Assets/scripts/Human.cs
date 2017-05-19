@@ -16,13 +16,9 @@ public class Human : Interactive
     private NavMeshAgent _agent;
     private Transform _avatar;
     private Animator _animationController;
+    private RandomModulatedAudio reactions;
 
     private bool _lookingAround = true;
-
-    [SerializeField, FMODUnity.EventRef]
-    private string _masReactionEventRef, _femReactionEventRef, _walkEventRef;
-    private FMOD.Studio.EventInstance _reactionEventInstance;
-    private FMOD.Studio.EventInstance _walkEventInstance;
 
     protected void Awake()
     {
@@ -30,22 +26,6 @@ public class Human : Interactive
         _avatar = transform.GetChild(0);
         _animationController = _avatar.GetComponentInChildren<Animator>();
 
-        SetupFmod();
-    }
-
-    private void SetupFmod()
-    {
-        _reactionEventInstance = FMODUnity.RuntimeManager.CreateInstance(VoiceType == HumanVoiceType.Masculine ? _masReactionEventRef : _femReactionEventRef);
-        _walkEventInstance = FMODUnity.RuntimeManager.CreateInstance(_walkEventRef);
-
-        Set3DAtributes();
-    }
-
-    private void Set3DAtributes()
-    {
-        var attributes = FMODUnity.RuntimeUtils.To3DAttributes(transform);
-        _reactionEventInstance.set3DAttributes(attributes);
-        _walkEventInstance.set3DAttributes(attributes);
     }
 
     protected override void Update()
@@ -118,15 +98,13 @@ public class Human : Interactive
         if (state == State.Interact)
         {
             _animationController.SetBool("interacting", true);
-            if (Application.platform != RuntimePlatform.LinuxEditor)
-                _reactionEventInstance.start();
+            //TODO: add reaction sounds
             _agent.SetDestination(transform.position);
         }
     }
 
     public void PlayFootstep()
     {
-        if (Application.platform != RuntimePlatform.LinuxEditor)
-            _walkEventInstance.start();
+        //TODO: Play footsteps
     }
 }
