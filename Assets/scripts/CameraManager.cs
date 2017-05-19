@@ -11,63 +11,63 @@ public class CameraManager : MonoBehaviour
     }
 
     [SerializeField]
-    private float _followDistance = 14f;
+    private float followDistance = 14f;
     [SerializeField]
-    private float _interactionDistance = 8f;
+    private float interactionDistance = 8f;
 
-    private Camera _camera;
-    private Player _player;
+    private Camera camera;
+    private Poozle player;
 
-    private Quaternion _restRotation;
-    private Quaternion _interactionRotation;
-    private Vector3 _forward;
+    private Quaternion restRotation;
+    private Quaternion interactionRotation;
+    private Vector3 forward;
 
-    private State _currentState = State.Following;
+    private State currentState = State.Following;
 
-    public Camera Camera { get { return _camera; } }
+    public Camera Camera { get { return camera; } }
 
-    public Vector3 Forward { get { return _forward; } }
-    public Vector3 Right { get { return _camera.transform.right; } }
+    public Vector3 Forward { get { return forward; } }
+    public Vector3 Right { get { return camera.transform.right; } }
 
     protected void Awake()
     {
-        _camera = Camera.main;
-        _player = transform.parent.GetComponentInChildren<Player>();
+        camera = Camera.main;
+		player = GetComponent<Poozle>();
 
-        _restRotation = _camera.transform.rotation;
-        _interactionRotation = Quaternion.Euler(_camera.transform.eulerAngles - 30f * Vector3.right);
-        _forward = Vector3.Cross(_camera.transform.right, Vector3.up);
+        restRotation = camera.transform.rotation;
+        interactionRotation = Quaternion.Euler(camera.transform.eulerAngles - 30f * Vector3.right);
+        forward = Vector3.Cross(camera.transform.right, Vector3.up);
     }
 
     protected void Update()
     {
-        switch (_currentState)
+        switch (currentState)
         {
             case State.Following:
-                _camera.transform.rotation = Quaternion.Lerp(_camera.transform.rotation,
-                    _restRotation, 5f * Time.deltaTime);
+                camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation,
+                    restRotation, 5f * Time.deltaTime);
 
-                _camera.transform.position = Vector3.Lerp(_camera.transform.position,
-                    (transform.position - _followDistance * (_restRotation * Vector3.forward)) + _player.Direction*2f, 5f * Time.deltaTime);
+                camera.transform.position = Vector3.Lerp(camera.transform.position,
+                    (transform.position - followDistance * (restRotation * Vector3.forward)) + player.Direction * 2f, 5f * Time.deltaTime);
                 break;
 
             case State.Interaction:
-                _camera.transform.rotation = Quaternion.Lerp(_camera.transform.rotation,
-                    _interactionRotation, 3f * Time.deltaTime);
+                camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation,
+                    interactionRotation, 3f * Time.deltaTime);
 
-                _camera.transform.position = Vector3.Lerp(_camera.transform.position,
-                    transform.position - _interactionDistance * (_interactionRotation * Vector3.forward), 3f * Time.deltaTime);
+                camera.transform.position = Vector3.Lerp(camera.transform.position,
+                    transform.position - interactionDistance * (interactionRotation * Vector3.forward), 3f * Time.deltaTime);
                 break;
         }
     }
 
     public void StartInteraction()
     {
-        _currentState = State.Interaction;
+        currentState = State.Interaction;
     }
 
     public void StopInteraction()
     {
-        _currentState = State.Following;
+        currentState = State.Following;
     }
 }

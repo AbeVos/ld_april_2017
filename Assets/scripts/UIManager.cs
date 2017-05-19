@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
 
 	protected void Awake()
 	{
-		_fader = transform.FindChild("Fader").GetComponent<Image>();
-		_prompt = transform.FindChild("Prompt").GetComponent<Text>();
+		_fader = transform.Find("Fader").GetComponent<Image>();
+		_prompt = transform.Find("Prompt").GetComponent<Text>();
 	}
 
 	protected void Update()
