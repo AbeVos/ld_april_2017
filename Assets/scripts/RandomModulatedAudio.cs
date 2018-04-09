@@ -9,12 +9,17 @@ public class RandomModulatedAudio : MonoBehaviour
     [SerializeField]
     private float pitchModulation;
 
+    private List<string> validParamaterNames;
     private AudioSource audioSource;
 
-    public void Play(string parameterName = "")
+    public void Play(string parameterName)
     {
         audioSource.pitch = Random.Range(1 - pitchModulation, 1 + pitchModulation);
-        
+        if (validParamaterNames.Contains(parameterName))
+        {
+            int randomNumber = Random.Range(0, namedAudioClips[parameterName].Length);
+            audioSource.PlayOneShot(namedAudioClips[parameterName][randomNumber]);
+        }
     }
 
     // Use this for initialization
