@@ -1,4 +1,6 @@
-﻿Shader "Instanced/Grass Shader vertex"
+﻿// Upgrade NOTE: upgraded instancing buffer 'MyProperties' to new syntax.
+
+Shader "Instanced/Grass Shader vertex"
 {
 	Properties
 	{
@@ -41,9 +43,10 @@
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
-			UNITY_INSTANCING_CBUFFER_START(MyProperties)
+			UNITY_INSTANCING_BUFFER_START(MyProperties)
 			UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-			UNITY_INSTANCING_CBUFFER_END
+#define _Color_arr MyProperties
+			UNITY_INSTANCING_BUFFER_END(MyProperties)
 
 			sampler2D _MainTex;
 			float _Amplitude;
@@ -69,7 +72,7 @@
 			{
 				UNITY_SETUP_INSTANCE_ID(i);
 
-				fixed4 col = UNITY_ACCESS_INSTANCED_PROP(_Color) * tex2D(_MainTex, i.uv);
+				fixed4 col = UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color) * tex2D(_MainTex, i.uv);
 
 				return col;
 			}

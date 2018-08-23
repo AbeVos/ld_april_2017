@@ -1,4 +1,6 @@
-﻿Shader "Toon/InstancedToonShaderCharacter"
+﻿// Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
+
+Shader "Toon/InstancedToonShaderCharacter"
 {
 	Properties
 	{
@@ -40,11 +42,14 @@
 			float2 uv_MainTex;
 		};
 
-		UNITY_INSTANCING_CBUFFER_START(Props)
+		UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)	
+#define _Color_arr Props
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _HairColor)
+#define _HairColor_arr Props
 			UNITY_DEFINE_INSTANCED_PROP(float, _SkinTone)
-		UNITY_INSTANCING_CBUFFER_END
+#define _SkinTone_arr Props
+		UNITY_INSTANCING_BUFFER_END(Props)
 
 		void surf(Input IN, inout SurfaceOutput o) 
 		{
@@ -54,11 +59,11 @@
 
 			fixed4 tex = tex2D(_MainTex, IN.uv_MainTex);
 			fixed4 color = fixed4(0, 0,0,0);
-			color += tex.r * UNITY_ACCESS_INSTANCED_PROP(_Color);
-			color += tex.g * tex2D(_MainTex, float2(0.9f, UNITY_ACCESS_INSTANCED_PROP(_SkinTone)/3));
-			color += tex.b * UNITY_ACCESS_INSTANCED_PROP(_HairColor);
+			color += tex.r * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color);
+			color += tex.g * tex2D(_MainTex, float2(0.9f, UNITY_ACCESS_INSTANCED_PROP(_SkinTone_arr, _SkinTone)/3));
+			color += tex.b * UNITY_ACCESS_INSTANCED_PROP(_HairColor_arr, _HairColor);
 			
-			o.Albedo = color.rgb * UNITY_ACCESS_INSTANCED_PROP(_Color).a;
+			o.Albedo = color.rgb * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color).a;
 			o.Alpha = color.a;
 		}
 	ENDCG
