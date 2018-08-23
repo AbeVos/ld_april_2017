@@ -203,7 +203,7 @@ public class Player : MonoBehaviour
 
     public void PlayVox()
     {
-        vox.Play();
+        //vox.Play();
         // TODO: Play vox
     }
 
